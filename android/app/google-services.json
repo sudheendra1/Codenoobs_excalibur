@@ -1,0 +1,46 @@
+{
+  "project_info": {
+    "project_number": "736852011567",
+    "project_id": "pharmcare-2aded",
+    "storage_bucket": "pharmcare-2aded.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:736852011567:android:e322c1f61bf52fa6f634da",
+        "android_client_info": {
+          "package_name": "com.example.pharmcare"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "736852011567-jupfe7fd00nnpshuklv4lsh3ta1e9tn7.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBn5nYA7h8AAsS5YhgGQaYZ3YQY90T-Jl4"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "736852011567-jupfe7fd00nnpshuklv4lsh3ta1e9tn7.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "736852011567-l6vrfnc0ra8je78pvb5sfg2q10f7houc.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.pharmcare"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
