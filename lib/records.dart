@@ -3,6 +3,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:pharmcare/home_page.dart';
 import 'package:pharmcare/record_viewer.dart';
+import 'package:pharmcare/share_modalsheet.dart';
 import 'package:pharmcare/upload_records.dart';
 
 class Record extends StatefulWidget {
@@ -14,12 +15,27 @@ class Record extends StatefulWidget {
 
 class _recordstate extends State<Record> {
 
+  String title='';
+  String img_url='';
+  String pdf_url='';
+
   void _addoverlay() {
     showModalBottomSheet(
 
         context: context,
         builder: (ctx) => upload_records());
   }
+  void _addoverlay1() {
+    showModalBottomSheet(
+
+        context: context,
+        builder: (ctx) => sharemodalsheet(title: title, img_url: img_url, pdf_url: pdf_url,));
+  }
+  
+  
+
+  
+  
   @override
   Widget build(BuildContext context) {
     return WillPopScope(
@@ -56,9 +72,9 @@ class _recordstate extends State<Record> {
                 itemBuilder: (context,index){
                   final document = snapshot.data!.docs[index];
                   final data = document.data() as Map<String, dynamic>;
-                  final title = data['Title'];
-                  final img_url=data['image_url'];
-                  final pdf_url= data['pdf_url'];
+                   title = data['Title'];
+                  img_url=data['image_url'];
+                   pdf_url= data['pdf_url'];
                   return Container(
                     margin: const EdgeInsets.all(8),
                     color: Color.fromARGB(100, 125, 216, 197),
@@ -79,7 +95,7 @@ class _recordstate extends State<Record> {
                       Row(
                         mainAxisAlignment: MainAxisAlignment.end,
                         children: [
-                        IconButton(onPressed: (){}, icon: Icon(Icons.share))
+                        IconButton(onPressed: _addoverlay1, icon: Icon(Icons.share))
                       ],)
                     ],));
 

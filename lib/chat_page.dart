@@ -16,7 +16,6 @@ class chat_page extends StatefulWidget {
   const chat_page(
       {super.key,  required this.receiveruserid,required this.doc_name,required this.pat_name});
 
-  //final receiveremail;
   final receiveruserid;
   final doc_name;
   final pat_name;
