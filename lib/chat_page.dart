@@ -76,7 +76,7 @@ class _chatpagestate extends State<chat_page>{
       });
     }
 
-}
+  }
   @override
   Widget build(BuildContext context) {
     return WillPopScope(
@@ -103,16 +103,16 @@ class _chatpagestate extends State<chat_page>{
   Widget _builMessagelist(){
     return StreamBuilder(stream: _chatservice.getMessages(widget.receiveruserid, _firebaseAuth.currentUser!.uid),
         builder:(context,snapshot){
-      if(snapshot.hasError){
-        return Text('error'+snapshot.error.toString());
-      }
-      if(snapshot.connectionState==ConnectionState.waiting){
-        return Center(child: CircularProgressIndicator(),);
-      }
-      return ListView(
-        children: snapshot.data!.docs.map((document) => _buildMessageItem(document)).toList(),
-      );
-    });
+          if(snapshot.hasError){
+            return Text('error'+snapshot.error.toString());
+          }
+          if(snapshot.connectionState==ConnectionState.waiting){
+            return Center(child: CircularProgressIndicator(),);
+          }
+          return ListView(
+            children: snapshot.data!.docs.map((document) => _buildMessageItem(document)).toList(),
+          );
+        });
   }
 
   Widget _buildMessageItem(DocumentSnapshot document){
@@ -120,8 +120,8 @@ class _chatpagestate extends State<chat_page>{
     print(data['SenderId']);
 
     var alignment = (data['SenderId']==_firebaseAuth.currentUser!.uid)
-    ?Alignment.centerRight:
-        Alignment.centerLeft;
+        ?Alignment.centerRight:
+    Alignment.centerLeft;
     Widget messageContent;
     if (data['imageUrl'] != null && data['imageUrl'].isNotEmpty) {
       messageContent = chatbubble(isSender: data['SenderId'] == _firebaseAuth.currentUser!.uid, message: data['imageUrl']);
@@ -204,19 +204,48 @@ class _chatpagestate extends State<chat_page>{
             IconButton(
               icon: Icon(Icons.image),
               onPressed: () async {
-                final bytes = await Pickimage(ImageSource.gallery);
-                if (bytes != null) {
-                  sendImageMessage(bytes);
-                }
+    showDialog(context: context, builder: (context){
+    return SimpleDialog(
+    title: const Text('Select image'),
+    children: [SimpleDialogOption(
+    padding: const EdgeInsets.all(20),
+    child: const Text('Take a photo'),
+    onPressed: ()async{
+    Navigator.of(context).pop();
+    final bytes = await Pickimage(ImageSource.camera);
+    if (bytes != null) {
+      sendImageMessage(bytes);
+    }
+
+    },
+    ),
+    SimpleDialogOption(
+    padding: const EdgeInsets.all(20),
+    child: const Text('Choose form gallery'),
+    onPressed: ()async{
+    Navigator.of(context).pop();
+    final bytes = await Pickimage(ImageSource.gallery);
+    if (bytes != null) {
+      sendImageMessage(bytes);
+    }
+
+    },
+    ),
+    TextButton(onPressed: (){Navigator.of(context).pop();}, child: const Text('Cancel')),
+    ],
+    );
+    });
+
+
               },
             ),
             Expanded(child: TextField(
               controller: msgcontroller,
-            decoration: InputDecoration(hintText: 'Enter message'),
+              decoration: InputDecoration(hintText: 'Enter message'),
 
-            obscureText:false,
+              obscureText:false,
             ),
-          ),
+            ),
             IconButton(onPressed: sendmessage, icon: Icon(Icons.arrow_upward,size: 40,))
           ],
           ),

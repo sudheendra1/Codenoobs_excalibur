@@ -2,6 +2,8 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:youtube_player_flutter/youtube_player_flutter.dart';
+import 'package:sqflite/sqflite.dart';
+import 'package:pharmcare/First_aid_database.dart';
 
 class First_aid extends StatefulWidget {
   const First_aid(
@@ -116,6 +118,24 @@ class _Firstaidstate extends State<First_aid> {
           ),
         ),
       ),
+      floatingActionButton: FloatingActionButton(
+        onPressed:_saveFirstAidLocally,
+        child: const Icon(Icons.save),
+      ),
+    );
+  }
+
+  void _saveFirstAidLocally() async {
+    final Map<String, dynamic> firstAid = {
+      'info': widget.info,
+      'name': widget.fname,
+      'url': widget.url,
+      'steps': widget.steps,
+    };
+    await FirstAidDatabase.insertFirstAid(firstAid);
+    ScaffoldMessenger.of(context).showSnackBar(
+      const SnackBar(content: Text('First Aid Saved Locally')),
     );
   }
 }
+

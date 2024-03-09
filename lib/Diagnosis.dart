@@ -191,7 +191,7 @@ class _chatbotstate extends State<Chatbot> {
       return;
     }
     final response = await http.post(
-      Uri.parse('http://192.168.0.229:5000/predict'),
+      Uri.parse('https://pharmcare-dp.onrender.com/predict'),
       body: jsonEncode({'symptoms': selectedSymptoms}),
       headers: {"Content-Type": "application/json"},
     );

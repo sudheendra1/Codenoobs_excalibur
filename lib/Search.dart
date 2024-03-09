@@ -26,7 +26,7 @@ class _SearchPageState extends State<SearchPage> {
 
   Future<void> _searchProduct() async {
     final response = await http.post(
-      Uri.parse('http://192.168.0.229:5000/search'),
+      Uri.parse('http://192.168.29.200:5000/search'),
       body: json.encode({'product_name': _searchQuery}),
       headers: {'Content-Type': 'application/json'},
     );

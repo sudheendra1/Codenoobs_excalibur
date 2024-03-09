@@ -1,7 +1,5 @@
 import 'dart:async';
-
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
@@ -18,6 +16,7 @@ import 'package:pharmcare/profile.dart';
 import 'package:pharmcare/Diagnosis.dart';
 import 'package:pharmcare/Firstaid_list.dart';
 import 'package:google_nav_bar/google_nav_bar.dart';
+import 'package:pharmcare/records.dart';
 
 class Homepage extends StatefulWidget {
   const Homepage({super.key});
@@ -67,7 +66,7 @@ class _homepagestate extends State<Homepage> {
   @override
   void initState() {
     super.initState();
-    getConnectivity();
+    //getConnectivity();
     fetchData();
 
   }
@@ -82,7 +81,7 @@ class _homepagestate extends State<Homepage> {
 
   }
 
-  getConnectivity(){
+  /*getConnectivity(){
     subscription=Connectivity().onConnectivityChanged.listen((result) async {
       isdeviceconnected = await InternetConnectionChecker().hasConnection;
       if(!isdeviceconnected && isalertset==false){
@@ -93,7 +92,7 @@ class _homepagestate extends State<Homepage> {
 
       }
     },);
-  }
+  }*/
 
   showdialogbox(){
     showDialog<bool>(context: context, builder: (context){
@@ -197,6 +196,15 @@ class _homepagestate extends State<Homepage> {
                             transitionDuration: Duration.zero,
                             reverseTransitionDuration: Duration.zero));
                   }
+                  if (index == 3) {
+                    Navigator.pushReplacement(
+                        context,
+                        PageRouteBuilder(
+                            pageBuilder: (context, animation1, animation2) =>
+                                Record(),
+                            transitionDuration: Duration.zero,
+                            reverseTransitionDuration: Duration.zero));
+                  }
 
                 },
                 //backgroundColor: Color.fromARGB(100, 125, 216, 197),
@@ -225,6 +233,11 @@ class _homepagestate extends State<Homepage> {
                   GButton(
                     icon: Icons.person,
                     text: 'Profile',
+                    gap: 10,
+                  ),
+                  GButton(
+                    icon: Icons.medical_information,
+                    text: 'Records',
                     gap: 10,
                   ),
 

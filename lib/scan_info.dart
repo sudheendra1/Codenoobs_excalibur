@@ -16,7 +16,7 @@ class _scan_infoState extends State<scan_info> {
   //var productDetails;
   Future<List<Map<String, dynamic>>> fetchProductDetails(String productName) async {
     final response = await http.post(
-      Uri.parse('http://192.168.0.229:5000/search'),
+      Uri.parse('http://192.168.29.200:5000/search'),
       headers: {"Content-Type": "application/json"},
       body: jsonEncode({"product_name": productName}),
     );
