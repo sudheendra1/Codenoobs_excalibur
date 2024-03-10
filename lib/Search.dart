@@ -5,14 +5,7 @@ import 'dart:async';
 
 import 'package:pharmcare/medlist_temp.dart';
 
-
-
-
-
 class SearchPage extends StatefulWidget {
-
-
-
   @override
   State<StatefulWidget> createState() {
     return _SearchPageState();
@@ -22,7 +15,7 @@ class SearchPage extends StatefulWidget {
 class _SearchPageState extends State<SearchPage> {
   String _searchQuery = '';
   List<dynamic> _results = [];
-  Timer _debounce=Timer(Duration.zero, () {});
+  Timer _debounce = Timer(Duration.zero, () {});
 
   Future<void> _searchProduct() async {
     final response = await http.post(
@@ -41,7 +34,7 @@ class _SearchPageState extends State<SearchPage> {
   }
 
   _onSearchChanged(String query) {
-    if (_debounce.isActive ) _debounce.cancel();
+    if (_debounce.isActive) _debounce.cancel();
     _debounce = Timer(const Duration(milliseconds: 30), () {
       if (query == _searchQuery) return;
       _searchQuery = query;
@@ -64,26 +57,27 @@ class _SearchPageState extends State<SearchPage> {
           height: 40,
           width: 300,
           child: TextField(
-          onChanged: _onSearchChanged,
-          decoration: InputDecoration(
-            filled: true,
-            fillColor: Colors.white,
-            labelText: 'Search for medicine',
-            border: OutlineInputBorder(
-                borderRadius: BorderRadius.circular(25.0)),
-            suffixIcon: Icon(Icons.search),
+            onChanged: _onSearchChanged,
+            decoration: InputDecoration(
+              filled: true,
+              fillColor: Colors.white,
+              labelText: 'Search for medicine',
+              border:
+                  OutlineInputBorder(borderRadius: BorderRadius.circular(25.0)),
+              suffixIcon: Icon(Icons.search),
+            ),
           ),
+        ),
       ),
-        ),),
-      body:   ListView.builder(
-                itemCount: _results.length,
-                itemBuilder: (context, index) {
-                  var product = _results[index];
-                  return medtemp(medicine: product,);
-                },
-              ),
-
-
+      body: ListView.builder(
+        itemCount: _results.length,
+        itemBuilder: (context, index) {
+          var product = _results[index];
+          return medtemp(
+            medicine: product,
+          );
+        },
+      ),
     );
   }
 }

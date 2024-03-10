@@ -9,6 +9,7 @@ import 'package:pharmcare/profile.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 import 'package:google_nav_bar/google_nav_bar.dart';
+import 'package:pharmcare/records.dart';
 
 class Chatbot extends StatefulWidget {
   const Chatbot({super.key});
@@ -161,15 +162,13 @@ class _chatbotstate extends State<Chatbot> {
   String? description;
   var precaution;
   String? doctor;
-  int count= 6;
-  String firstsymptom='select';
-  String secondsymptom='select';
-  String thirdsymptom='select';
-  String fourthsymptom='select';
-  String fifthsymptom='select';
-  String sixthsymptom='select';
-
-
+  int count = 6;
+  String firstsymptom = 'select';
+  String secondsymptom = 'select';
+  String thirdsymptom = 'select';
+  String fourthsymptom = 'select';
+  String fifthsymptom = 'select';
+  String sixthsymptom = 'select';
 
   Future<void> predictDisease() async {
     if (selectedSymptoms.length < 4 || selectedSymptoms.length > 6) {
@@ -198,27 +197,29 @@ class _chatbotstate extends State<Chatbot> {
 
     final responseData = jsonDecode(response.body);
     print(responseData.length);
-   print(responseData);
+    print(responseData);
     setState(() {
       prediction = responseData['disease'];
       description = responseData['description'][0]['Symptom_Description'];
       precaution = responseData['precaution'][0];
       doctor = responseData['doctor'][0]['Allergist'];
-
-
-
     });
-    if(prediction!=null){
+    if (prediction != null) {
       Navigator.push(
           context,
           PageRouteBuilder(
-              pageBuilder: (context, animation1, animation2) =>
-                  diagnose_result(prediction: prediction, description: description, precaution: precaution, doctor: doctor),
+              pageBuilder: (context, animation1, animation2) => diagnose_result(
+                  prediction: prediction,
+                  description: description,
+                  precaution: precaution,
+                  doctor: doctor),
               transitionDuration: Duration.zero,
               reverseTransitionDuration: Duration.zero));
     }
   }
-  Widget _buildSymptomDropdown(String label, String currentSelection, Function(String?) onChanged, Function onClear) {
+
+  Widget _buildSymptomDropdown(String label, String currentSelection,
+      Function(String?) onChanged, Function onClear) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -237,9 +238,9 @@ class _chatbotstate extends State<Chatbot> {
                   items: symptoms
                       .where((symptom) => !selectedSymptoms.contains(symptom))
                       .map((symptom) => DropdownMenuItem(
-                    value: symptom,
-                    child: Text(symptom),
-                  ))
+                            value: symptom,
+                            child: Text(symptom),
+                          ))
                       .toList(),
                   onChanged: onChanged,
                 ),
@@ -258,109 +259,117 @@ class _chatbotstate extends State<Chatbot> {
     );
   }
 
-
   @override
   Widget build(BuildContext context) {
     return WillPopScope(
       onWillPop: () async {
-        Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => Homepage()));
+        Navigator.pushReplacement(
+            context, MaterialPageRoute(builder: (context) => Homepage()));
         return true;
       },
-      child:  DefaultTabController(
+      child: DefaultTabController(
         length: 2,
         child: Scaffold(
-            appBar: AppBar(
-              backgroundColor: Color.fromARGB(100, 125, 216, 197),
-              title: Text('Disease predictor'),
-              bottom: TabBar(tabs: [Tab(text: 'Diagnose',),Tab(text: 'Records',)]),
-            ),
-
-            body:  TabBarView(
-              children: [Padding(
+          appBar: AppBar(
+            backgroundColor: Color.fromARGB(100, 125, 216, 197),
+            title: Text('Disease predictor'),
+            bottom: TabBar(tabs: [
+              Tab(
+                text: 'Diagnose',
+              ),
+              Tab(
+                text: 'Records',
+              )
+            ]),
+          ),
+          body: TabBarView(
+            children: [
+              Padding(
                 padding: const EdgeInsets.all(16.0),
                 child: ListView(
                   children: [
-                    _buildSymptomDropdown('Select first symptom:', firstsymptom, (value) {
+                    _buildSymptomDropdown('Select first symptom:', firstsymptom,
+                        (value) {
                       setState(() {
                         firstsymptom = value!;
                         selectedSymptoms.add(value);
                       });
-
-                    },
-                            () {
-                          setState(() {
-                            selectedSymptoms.remove(firstsymptom);
-                            firstsymptom = 'select';
-                          });
-                        }),
-                    _buildSymptomDropdown('Select second symptom:', secondsymptom, (value) {
+                    }, () {
+                      setState(() {
+                        selectedSymptoms.remove(firstsymptom);
+                        firstsymptom = 'select';
+                      });
+                    }),
+                    _buildSymptomDropdown(
+                        'Select second symptom:', secondsymptom, (value) {
                       setState(() {
                         secondsymptom = value!;
                         selectedSymptoms.add(value);
                       });
-                    },
-                            () {
-                          setState(() {
-                            selectedSymptoms.remove(secondsymptom);
-                            secondsymptom = 'select';
-                          });
-                        }),
-                    _buildSymptomDropdown('Select third symptom:', thirdsymptom, (value) {
+                    }, () {
+                      setState(() {
+                        selectedSymptoms.remove(secondsymptom);
+                        secondsymptom = 'select';
+                      });
+                    }),
+                    _buildSymptomDropdown('Select third symptom:', thirdsymptom,
+                        (value) {
                       setState(() {
                         thirdsymptom = value!;
                         selectedSymptoms.add(value);
                       });
-                    },
-                            () {
-                          setState(() {
-                            selectedSymptoms.remove(thirdsymptom);
-                            thirdsymptom = 'select';
-                          });
-                        }),
-                    _buildSymptomDropdown('Select fourth symptom:', fourthsymptom, (value) {
+                    }, () {
+                      setState(() {
+                        selectedSymptoms.remove(thirdsymptom);
+                        thirdsymptom = 'select';
+                      });
+                    }),
+                    _buildSymptomDropdown(
+                        'Select fourth symptom:', fourthsymptom, (value) {
                       setState(() {
                         fourthsymptom = value!;
                         selectedSymptoms.add(value);
                       });
-                    },
-                            () {
-                          setState(() {
-                            selectedSymptoms.remove(fourthsymptom);
-                            fourthsymptom = 'select';
-                          });
-                        }),
-                    _buildSymptomDropdown('Select fifth symptom:', fifthsymptom, (value) {
+                    }, () {
+                      setState(() {
+                        selectedSymptoms.remove(fourthsymptom);
+                        fourthsymptom = 'select';
+                      });
+                    }),
+                    _buildSymptomDropdown('Select fifth symptom:', fifthsymptom,
+                        (value) {
                       setState(() {
                         fifthsymptom = value!;
                         selectedSymptoms.add(value);
                       });
-                    },
-                            () {
-                          setState(() {
-                            selectedSymptoms.remove(fifthsymptom);
-                            fifthsymptom = 'select';
-                          });
-                        }),
-                    _buildSymptomDropdown('Select sixth symptom:', sixthsymptom, (value) {
+                    }, () {
                       setState(() {
-                       sixthsymptom = value!;
+                        selectedSymptoms.remove(fifthsymptom);
+                        fifthsymptom = 'select';
+                      });
+                    }),
+                    _buildSymptomDropdown('Select sixth symptom:', sixthsymptom,
+                        (value) {
+                      setState(() {
+                        sixthsymptom = value!;
                         selectedSymptoms.add(value);
                       });
-                    },
-                            () {
-                          setState(() {
-                            selectedSymptoms.remove(sixthsymptom);
-                            sixthsymptom = 'select';
-                          });
-                        }),
-
+                    }, () {
+                      setState(() {
+                        selectedSymptoms.remove(sixthsymptom);
+                        sixthsymptom = 'select';
+                      });
+                    }),
                     Center(
                       child: ElevatedButton(
                         style: ElevatedButton.styleFrom(
-                          foregroundColor: Colors.white, backgroundColor: Color.fromARGB(100, 125, 216, 197),
-                          padding: EdgeInsets.symmetric(horizontal: 30, vertical: 15),
+                          foregroundColor: Colors.white,
+                          backgroundColor: Color.fromARGB(100, 125, 216, 197),
+                          padding: EdgeInsets.symmetric(
+                              horizontal: 30, vertical: 15),
                           shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(30), // Rounded corners
+                            borderRadius:
+                                BorderRadius.circular(30), // Rounded corners
                           ),
                           elevation: 5, // Shadow
                         ),
@@ -368,41 +377,44 @@ class _chatbotstate extends State<Chatbot> {
                         child: Row(
                           mainAxisSize: MainAxisSize.min,
                           children: [
-
                             Text('Predict Disease'),
                           ],
                         ),
                       ),
                     ),
-
-                    if (prediction != null) Center(child: Text('Predicted Disease: $prediction')),
+                    if (prediction != null)
+                      Center(child: Text('Predicted Disease: $prediction')),
                   ],
                 ),
               ),
-                StreamBuilder(
-                  stream: FirebaseFirestore.instance.collection('Predictions').doc(FirebaseAuth.instance.currentUser!.uid).collection('Predictions').snapshots(),
-                  builder:  (context,
-                      AsyncSnapshot<QuerySnapshot<Map<String, dynamic>>> snapshot) {
-                    if (snapshot.connectionState == ConnectionState.waiting) {
-                      return const Center(
-                        child: CircularProgressIndicator(),
-                      );
-                    }
-                    return ListView.builder(
-                        itemCount: snapshot.data!.docs.length,
-                        itemBuilder: (context, index) => Pred_list(snap: snapshot.data!.docs[index].data(),));
-                  },
-                ),
-              ],
-            ),
-
-
-
+              StreamBuilder(
+                stream: FirebaseFirestore.instance
+                    .collection('Predictions')
+                    .doc(FirebaseAuth.instance.currentUser!.uid)
+                    .collection('Predictions')
+                    .snapshots(),
+                builder: (context,
+                    AsyncSnapshot<QuerySnapshot<Map<String, dynamic>>>
+                        snapshot) {
+                  if (snapshot.connectionState == ConnectionState.waiting) {
+                    return const Center(
+                      child: CircularProgressIndicator(),
+                    );
+                  }
+                  return ListView.builder(
+                      itemCount: snapshot.data!.docs.length,
+                      itemBuilder: (context, index) => Pred_list(
+                            snap: snapshot.data!.docs[index].data(),
+                          ));
+                },
+              ),
+            ],
+          ),
           bottomNavigationBar: Container(
             color: Color.fromARGB(100, 125, 216, 197),
             child: Padding(
               padding:
-              const EdgeInsets.symmetric(horizontal: 25.0, vertical: 4),
+                  const EdgeInsets.symmetric(horizontal: 25.0, vertical: 4),
               child: GNav(
                 selectedIndex: _currentindex,
                 style: GnavStyle.oldSchool,
@@ -427,7 +439,7 @@ class _chatbotstate extends State<Chatbot> {
                             transitionDuration: Duration.zero,
                             reverseTransitionDuration: Duration.zero));
                   }
-                  if (index == 2) {
+                  if (index == 3) {
                     Navigator.pushReplacement(
                         context,
                         PageRouteBuilder(
@@ -436,13 +448,21 @@ class _chatbotstate extends State<Chatbot> {
                             transitionDuration: Duration.zero,
                             reverseTransitionDuration: Duration.zero));
                   }
-
+                  if (index == 2) {
+                    Navigator.pushReplacement(
+                        context,
+                        PageRouteBuilder(
+                            pageBuilder: (context, animation1, animation2) =>
+                                Record(),
+                            transitionDuration: Duration.zero,
+                            reverseTransitionDuration: Duration.zero));
+                  }
                 },
                 //backgroundColor: Color.fromARGB(100, 125, 216, 197),
                 color: Colors.black,
                 activeColor: Colors.black,
                 tabBorderRadius: 10,
-                tabBackgroundColor:Color.fromARGB(100, 125, 216, 197),
+                tabBackgroundColor: Color.fromARGB(100, 125, 216, 197),
                 haptic: true,
                 hoverColor: Color.fromARGB(150, 125, 216, 197),
                 padding: EdgeInsets.symmetric(horizontal: 15, vertical: 5),
@@ -460,20 +480,22 @@ class _chatbotstate extends State<Chatbot> {
                     text: 'Diagnose',
                     gap: 10,
                   ),
-
+                  GButton(
+                    icon: Icons.medical_information,
+                    text: 'Records',
+                    gap: 10,
+                  ),
                   GButton(
                     icon: Icons.person,
                     text: 'Profile',
                     gap: 10,
                   ),
-
                 ],
               ),
             ),
           ),
-          ),
+        ),
       ),
-
     );
   }
 }

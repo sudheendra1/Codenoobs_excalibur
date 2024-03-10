@@ -8,7 +8,6 @@ import 'package:pharmcare/signup.dart';
 final _auth = FirebaseAuth.instance;
 bool _isloading = false;
 
-
 class Loginpage extends StatefulWidget {
   const Loginpage({super.key});
 
@@ -19,73 +18,71 @@ class Loginpage extends StatefulWidget {
 }
 
 class _loginpagestate extends State<Loginpage> {
-
-
-
-  final pass=TextEditingController();
-  final em= TextEditingController();
+  final pass = TextEditingController();
+  final em = TextEditingController();
 
   var _enteredemail = '';
   var _enteredpassword = '';
-    final _formkey = GlobalKey<FormState>();
+  final _formkey = GlobalKey<FormState>();
 
-void submit()async {
-  setState(() {
-    _isloading=true;
-  });
-  final _isvalid = _formkey.currentState!.validate();
-  if (!_isvalid) {
+  void submit() async {
     setState(() {
-      _isloading=false;
+      _isloading = true;
     });
-    return;
-  }
-  _formkey.currentState!.save();
-  try{
-    final usercredetials = await _auth.signInWithEmailAndPassword(
-        email: _enteredemail, password: _enteredpassword);
-    if (usercredetials.user!.emailVerified == false) {
+    final _isvalid = _formkey.currentState!.validate();
+    if (!_isvalid) {
       setState(() {
-        _isloading=false;
+        _isloading = false;
       });
-      usercredetials.user!.sendEmailVerification();
-      usercredetials.user!.reload();
-      ScaffoldMessenger.of(context).clearSnackBars();
-      ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('Check your Email for verification')));
-      em.clear();
-      pass.clear();
-    } else {
-      setState(() {
-        _isloading=false;
-      });
-      Navigator.push(context,
-          MaterialPageRoute(builder: (context) => const Homepage()));
+      return;
     }
-  } on FirebaseAuthException catch (error) {
-    if (error.code == 'email-already-in-use') {
-      ScaffoldMessenger.of(context).clearSnackBars();
-      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-        content: Text(error.message ?? 'Authentication failed'),
-      ));
-      setState(() {
-        _isloading=false;
-      });
+    _formkey.currentState!.save();
+    try {
+      final usercredetials = await _auth.signInWithEmailAndPassword(
+          email: _enteredemail, password: _enteredpassword);
+      if (usercredetials.user!.emailVerified == false) {
+        setState(() {
+          _isloading = false;
+        });
+        usercredetials.user!.sendEmailVerification();
+        usercredetials.user!.reload();
+        ScaffoldMessenger.of(context).clearSnackBars();
+        ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(content: Text('Check your Email for verification')));
+        em.clear();
+        pass.clear();
+      } else {
+        setState(() {
+          _isloading = false;
+        });
+        Navigator.push(
+            context, MaterialPageRoute(builder: (context) => const Homepage()));
+      }
+    } on FirebaseAuthException catch (error) {
+      if (error.code == 'email-already-in-use') {
+        ScaffoldMessenger.of(context).clearSnackBars();
+        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+          content: Text(error.message ?? 'Authentication failed'),
+        ));
+        setState(() {
+          _isloading = false;
+        });
+      }
     }
-  }
-
   }
 
   @override
   Widget build(BuildContext context) {
     return WillPopScope(
-      onWillPop: ()async{SystemNavigator.pop();
-        return true;},
+      onWillPop: () async {
+        SystemNavigator.pop();
+        return true;
+      },
       child: Scaffold(
         backgroundColor: Colors.white,
         appBar: AppBar(
           elevation: 0.0,
-          title: Text('Sign In',style: TextStyle(color: Colors.black87)),
+          title: Text('Sign In', style: TextStyle(color: Colors.black87)),
           backgroundColor: Color.fromARGB(100, 125, 216, 197),
         ),
         body: SingleChildScrollView(
@@ -104,7 +101,8 @@ void submit()async {
                       filled: true,
                       fillColor: Colors.grey[300],
                       labelText: 'Email ID',
-                      border: OutlineInputBorder(borderRadius: BorderRadius.circular(15.0)),
+                      border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(15.0)),
                       prefixIcon: Icon(Icons.email),
                     ),
                     keyboardType: TextInputType.emailAddress,
@@ -129,7 +127,8 @@ void submit()async {
                       filled: true,
                       fillColor: Colors.grey[300],
                       labelText: 'Password',
-                      border: OutlineInputBorder(borderRadius: BorderRadius.circular(15.0)),
+                      border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(15.0)),
                       prefixIcon: Icon(Icons.lock),
                     ),
                     obscureText: true,
@@ -148,36 +147,56 @@ void submit()async {
                     },
                   ),
                   SizedBox(height: 20),
-                  ElevatedButton(onPressed: submit, child:_isloading?const Center(child: CircularProgressIndicator(color: Colors.purpleAccent,),): Text('Sign In',style: TextStyle(color: Colors.black),),
+                  ElevatedButton(
+                    onPressed: submit,
+                    child: _isloading
+                        ? const Center(
+                            child: CircularProgressIndicator(
+                              color: Colors.purpleAccent,
+                            ),
+                          )
+                        : Text(
+                            'Sign In',
+                            style: TextStyle(color: Colors.black),
+                          ),
                     style: ElevatedButton.styleFrom(
                       backgroundColor: Color.fromARGB(100, 125, 216, 197),
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(20),
                       ),
-                      padding: EdgeInsets.symmetric(horizontal: 50, vertical: 15),
-                    ),),
+                      padding:
+                          EdgeInsets.symmetric(horizontal: 50, vertical: 15),
+                    ),
+                  ),
                   SizedBox(height: 20),
                   ElevatedButton.icon(
-                    icon: Image.asset("assets/images/google_logo.png", height: 24.0), // Adjust this path
+                    icon: Image.asset("assets/images/google_logo.png",
+                        height: 24.0),
+                    // Adjust this path
                     label: Text("Sign in with Google"),
-                    onPressed: (){},
+                    onPressed: () {},
                     style: ElevatedButton.styleFrom(
-                      foregroundColor: Colors.black, backgroundColor: Colors.white,
+                      foregroundColor: Colors.black,
+                      backgroundColor: Colors.white,
                     ),
                   ),
                   SizedBox(height: 16),
                   ElevatedButton.icon(
-                    icon: Image.asset("assets/images/Facebook.png", height: 24.0), // Adjust this path
+                    icon:
+                        Image.asset("assets/images/Facebook.png", height: 24.0),
+                    // Adjust this path
                     label: Text("Sign in with Facebook"),
-                    onPressed: (){},
+                    onPressed: () {},
                     style: ElevatedButton.styleFrom(
-                      foregroundColor: Colors.white, backgroundColor: Colors.blueAccent,
+                      foregroundColor: Colors.white,
+                      backgroundColor: Colors.blueAccent,
                     ),
                   ),
                   SizedBox(height: 20),
                   TextButton(
                     onPressed: () {
-                      Navigator.push(context, MaterialPageRoute(builder: (context) => Signup()));
+                      Navigator.push(context,
+                          MaterialPageRoute(builder: (context) => Signup()));
                     },
                     child: Text('Don\'t have an account? Sign Up'),
                   )

@@ -1,6 +1,5 @@
 import 'dart:async';
 
-
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
@@ -30,20 +29,18 @@ class MyApp extends StatefulWidget {
 }
 
 class _MyAppState extends State<MyApp> {
-
-
   @override
   Widget build(BuildContext context) {
     return GetMaterialApp(
       title: 'Pharmcare',
-theme: ThemeData(useMaterial3: true),
+      theme: ThemeData(useMaterial3: true),
       home: StreamBuilder(
           stream: FirebaseAuth.instance.authStateChanges(),
           builder: (ctx, snapshot) {
-            if(snapshot.connectionState==ConnectionState.waiting){
+            if (snapshot.connectionState == ConnectionState.waiting) {
               return const Splashscreen();
             }
-            if(snapshot.hasData){
+            if (snapshot.hasData) {
               return const Splashscreen();
             }
             return const Loginpage();
@@ -51,4 +48,3 @@ theme: ThemeData(useMaterial3: true),
     );
   }
 }
-

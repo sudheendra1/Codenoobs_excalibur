@@ -8,10 +8,17 @@ class Sharing {
   final String imageurl;
   final String pdfurl;
 
-  Sharing({required this.senderId,required this.recieverId,required this.title,required this.username,required this.imageurl,required this.pdfurl,});
+  Sharing({
+    required this.senderId,
+    required this.recieverId,
+    required this.title,
+    required this.username,
+    required this.imageurl,
+    required this.pdfurl,
+  });
 
-  Map<String,dynamic> toMap(){
-    return{
+  Map<String, dynamic> toMap() {
+    return {
       'SenderId': senderId,
       'SenderName': username,
       'RecieverId': recieverId,
@@ -20,5 +27,4 @@ class Sharing {
       'pdfurl': pdfurl,
     };
   }
-
 }

@@ -63,7 +63,8 @@ class DefaultFirebaseOptions {
     messagingSenderId: '736852011567',
     projectId: 'pharmcare-2aded',
     storageBucket: 'pharmcare-2aded.appspot.com',
-    iosClientId: '736852011567-l6vrfnc0ra8je78pvb5sfg2q10f7houc.apps.googleusercontent.com',
+    iosClientId:
+        '736852011567-l6vrfnc0ra8je78pvb5sfg2q10f7houc.apps.googleusercontent.com',
     iosBundleId: 'com.example.pharmcare',
   );
 }

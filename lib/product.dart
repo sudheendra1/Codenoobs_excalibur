@@ -7,13 +7,13 @@ class Product {
   factory Product.fromJson(Map<String, dynamic> json) {
     String fullTitle = json['title'];
     List<String> titleWords = fullTitle.split(' ');
-    String shortTitle = titleWords.length > 2 ? titleWords.sublist(0, 2).join(' ') : fullTitle;
+    String shortTitle =
+        titleWords.length > 2 ? titleWords.sublist(0, 2).join(' ') : fullTitle;
     print(shortTitle);
 
     return Product(
       barcodeNumber: json['barcode_number'],
       title: shortTitle,
-
     );
   }
 }

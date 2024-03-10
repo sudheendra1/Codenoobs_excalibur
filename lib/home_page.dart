@@ -29,56 +29,68 @@ class Homepage extends StatefulWidget {
 
 class _homepagestate extends State<Homepage> {
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
-  bool yourBooleanValue=false;
+  bool yourBooleanValue = false;
 
-  final FirebaseAuth _firebaseAuth= FirebaseAuth.instance;
-  int _currentindex=0;
+  final FirebaseAuth _firebaseAuth = FirebaseAuth.instance;
+  int _currentindex = 0;
   String? Scanresult;
 
   late StreamSubscription subscription;
-  var isdeviceconnected=false;
-  bool isalertset= false;
+  var isdeviceconnected = false;
+  bool isalertset = false;
 
-  Future scanbarcode()async{
-
-    try{
-      Scanresult= await FlutterBarcodeScanner.scanBarcode("#ff6666", "Cancel", true, ScanMode.BARCODE);
-    } on PlatformException{
-      Scanresult= 'Failed to get platform version';
+  Future scanbarcode() async {
+    try {
+      Scanresult = await FlutterBarcodeScanner.scanBarcode(
+          "#ff6666", "Cancel", true, ScanMode.BARCODE);
+    } on PlatformException {
+      Scanresult = 'Failed to get platform version';
     }
-    if(!mounted) return;
+    if (!mounted) return;
     setState(() {
-      Scanresult=Scanresult;
-      Navigator.push(context, PageRouteBuilder(pageBuilder: (context,animation1,animation2)=>Bar(bar:Scanresult),transitionDuration: Duration.zero,reverseTransitionDuration: Duration.zero));
+      Scanresult = Scanresult;
+      Navigator.push(
+          context,
+          PageRouteBuilder(
+              pageBuilder: (context, animation1, animation2) =>
+                  Bar(bar: Scanresult),
+              transitionDuration: Duration.zero,
+              reverseTransitionDuration: Duration.zero));
 
       if (kDebugMode) {
         print(Scanresult);
       }
     });
   }
+
   FocusNode _focusNode = FocusNode();
+
   @override
   void dispose() {
     subscription.cancel();
     _focusNode.dispose();
     super.dispose();
   }
+
   @override
   void initState() {
     super.initState();
     //getConnectivity();
     fetchData();
-
   }
+
   fetchData() async {
-    _firestore.collection("users").doc(_firebaseAuth.currentUser!.uid).get().then((value){
+    _firestore
+        .collection("users")
+        .doc(_firebaseAuth.currentUser!.uid)
+        .get()
+        .then((value) {
       setState(() {
         yourBooleanValue = value.data()?['is_doctor'];
 
         print(yourBooleanValue);
       });
     });
-
   }
 
   /*getConnectivity(){
@@ -94,36 +106,39 @@ class _homepagestate extends State<Homepage> {
     },);
   }*/
 
-  showdialogbox(){
-    showDialog<bool>(context: context, builder: (context){
-      return AlertDialog(
-        title: const Text('NO CONNECTION'),
-        content: const Text('Please check your internet connection'),
-        actions: [
-          TextButton(
-            onPressed: () async {
-              Navigator.pop(context, false);
-              setState(() {
-                isalertset=false;
-
-              });
-              isdeviceconnected=await InternetConnectionChecker().hasConnection;
-              if(!isdeviceconnected){
-                showdialogbox();
+  showdialogbox() {
+    showDialog<bool>(
+      context: context,
+      builder: (context) {
+        return AlertDialog(
+          title: const Text('NO CONNECTION'),
+          content: const Text('Please check your internet connection'),
+          actions: [
+            TextButton(
+              onPressed: () async {
+                Navigator.pop(context, false);
                 setState(() {
-                  isalertset=true;
+                  isalertset = false;
                 });
-              }
-            },
-            child: const Text('OK', style: TextStyle(color: Colors.black),),
-          ),
-
-        ],
-      );
-    },
+                isdeviceconnected =
+                    await InternetConnectionChecker().hasConnection;
+                if (!isdeviceconnected) {
+                  showdialogbox();
+                  setState(() {
+                    isalertset = true;
+                  });
+                }
+              },
+              child: const Text(
+                'OK',
+                style: TextStyle(color: Colors.black),
+              ),
+            ),
+          ],
+        );
+      },
     );
   }
-
 
   @override
   Widget build(BuildContext context) {
@@ -140,7 +155,10 @@ class _homepagestate extends State<Homepage> {
                   onPressed: () {
                     SystemNavigator.pop();
                   },
-                  child: const Text('Yes', style: TextStyle(color: Colors.red),),
+                  child: const Text(
+                    'Yes',
+                    style: TextStyle(color: Colors.red),
+                  ),
                 ),
                 TextButton(
                   onPressed: () {
@@ -162,7 +180,7 @@ class _homepagestate extends State<Homepage> {
             color: Color.fromARGB(100, 125, 216, 197),
             child: Padding(
               padding:
-              const EdgeInsets.symmetric(horizontal: 25.0, vertical: 4),
+                  const EdgeInsets.symmetric(horizontal: 25.0, vertical: 4),
               child: GNav(
                 selectedIndex: _currentindex,
                 style: GnavStyle.oldSchool,
@@ -192,7 +210,7 @@ class _homepagestate extends State<Homepage> {
                         context,
                         PageRouteBuilder(
                             pageBuilder: (context, animation1, animation2) =>
-                                Profile(),
+                                Record(),
                             transitionDuration: Duration.zero,
                             reverseTransitionDuration: Duration.zero));
                   }
@@ -201,17 +219,16 @@ class _homepagestate extends State<Homepage> {
                         context,
                         PageRouteBuilder(
                             pageBuilder: (context, animation1, animation2) =>
-                                Record(),
+                                Profile(),
                             transitionDuration: Duration.zero,
                             reverseTransitionDuration: Duration.zero));
                   }
-
                 },
                 //backgroundColor: Color.fromARGB(100, 125, 216, 197),
                 color: Colors.black,
                 activeColor: Colors.black,
                 tabBorderRadius: 10,
-                tabBackgroundColor:Color.fromARGB(200, 125, 216, 197),
+                tabBackgroundColor: Color.fromARGB(200, 125, 216, 197),
                 haptic: true,
                 hoverColor: Color.fromARGB(150, 125, 216, 197),
                 padding: EdgeInsets.symmetric(horizontal: 15, vertical: 5),
@@ -229,35 +246,41 @@ class _homepagestate extends State<Homepage> {
                     text: 'Diagnose',
                     gap: 10,
                   ),
-
-                  GButton(
-                    icon: Icons.person,
-                    text: 'Profile',
-                    gap: 10,
-                  ),
                   GButton(
                     icon: Icons.medical_information,
                     text: 'Records',
                     gap: 10,
                   ),
-
+                  GButton(
+                    icon: Icons.person,
+                    text: 'Profile',
+                    gap: 10,
+                  ),
                 ],
               ),
             ),
           ),
           appBar: AppBar(
               backgroundColor: Color.fromARGB(100, 125, 216, 197),
-
               actions: [
                 Container(
                   width: 300,
                   child: TextButton.icon(
                     onPressed: () {
-    Navigator.push(context, PageRouteBuilder(pageBuilder: (context,animation1,animation2)=>SearchPage(),transitionDuration: Duration.zero,reverseTransitionDuration: Duration.zero));},
+                      Navigator.push(
+                          context,
+                          PageRouteBuilder(
+                              pageBuilder: (context, animation1, animation2) =>
+                                  SearchPage(),
+                              transitionDuration: Duration.zero,
+                              reverseTransitionDuration: Duration.zero));
+                    },
                     icon: Icon(Icons.search, color: Colors.black),
-                    label: Text('Search medicines', style: TextStyle(color: Colors.black)),
+                    label: Text('Search medicines',
+                        style: TextStyle(color: Colors.black)),
                     style: TextButton.styleFrom(
-                      padding: EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
+                      padding:
+                          EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
                       side: BorderSide(color: Colors.black),
                     ),
                   ),
@@ -271,22 +294,28 @@ class _homepagestate extends State<Homepage> {
             child: Column(
               children: [
                 GestureDetector(
-                  onTap: (){Navigator.push(context, MaterialPageRoute(builder: (context)=>medicineslist()));},
+                  onTap: () {
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => medicineslist()));
+                  },
                   child: Padding(
-                    padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 8),
+                    padding:
+                        const EdgeInsets.symmetric(vertical: 8, horizontal: 8),
                     child: Container(
                       height: 100,
                       width: 390,
                       decoration: BoxDecoration(
                         color: Colors.white,
-                        borderRadius: BorderRadius.circular(12.0), // Rounded corners
+                        borderRadius: BorderRadius.circular(12.0),
+                        // Rounded corners
                         border: Border.all(
                           color: Colors.black,
                           width: 2.0,
                         ),
                       ),
                       child: Row(
-
                         children: [
                           Padding(
                             padding: const EdgeInsets.fromLTRB(32, 16, 32, 16),
@@ -300,7 +329,12 @@ class _homepagestate extends State<Homepage> {
                             child: Column(
                               mainAxisAlignment: MainAxisAlignment.center,
                               children: [
-                                Text('Most searched medicines',style: TextStyle(fontWeight: FontWeight.bold,fontSize: 18),),
+                                Text(
+                                  'Most searched medicines',
+                                  style: TextStyle(
+                                      fontWeight: FontWeight.bold,
+                                      fontSize: 18),
+                                ),
                                 Text("Details about medicines")
                               ],
                             ),
@@ -324,37 +358,56 @@ class _homepagestate extends State<Homepage> {
                   ),
                 ),
                 GestureDetector(
-                  onTap: (){Navigator.push(context, MaterialPageRoute(builder: (context)=>Doctor()));},
+                  onTap: () {
+                    Navigator.push(context,
+                        MaterialPageRoute(builder: (context) => Doctor()));
+                  },
                   child: Padding(
-                    padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 8),
+                    padding:
+                        const EdgeInsets.symmetric(vertical: 8, horizontal: 8),
                     child: Container(
                       height: 100,
                       width: 390,
                       decoration: BoxDecoration(
                         color: Colors.white,
-                        borderRadius: BorderRadius.circular(12.0), // Rounded corners
+                        borderRadius: BorderRadius.circular(12.0),
+                        // Rounded corners
                         border: Border.all(
                           color: Colors.black,
                           width: 2.0,
                         ),
                       ),
                       child: Row(
-
                         children: [
                           Padding(
                             padding: const EdgeInsets.fromLTRB(32, 16, 32, 16),
-                            child: yourBooleanValue?Image.asset("assets/images/Patient.png",height: 50,):Image.asset(
-                              "assets/images/Doc.png",
-                              height: 50,
-                            ),
+                            child: yourBooleanValue
+                                ? Image.asset(
+                                    "assets/images/Patient.png",
+                                    height: 50,
+                                  )
+                                : Image.asset(
+                                    "assets/images/Doc.png",
+                                    height: 50,
+                                  ),
                           ),
                           Padding(
                             padding: const EdgeInsets.fromLTRB(0, 16, 16, 16),
                             child: Column(
                               mainAxisAlignment: MainAxisAlignment.center,
                               children: [
-                                yourBooleanValue?Text('View patients',style: TextStyle(fontWeight: FontWeight.bold,fontSize: 18)):Text('Consult Doctor',style: TextStyle(fontWeight: FontWeight.bold,fontSize: 18)),
-                                yourBooleanValue?Text('Chat with your patients'):Text("Advice from virtual doctor")
+                                yourBooleanValue
+                                    ? Text('View patients',
+                                        style: TextStyle(
+                                            fontWeight: FontWeight.bold,
+                                            fontSize: 18))
+                                    : Text('Consult Doctor',
+                                        style: TextStyle(
+                                            fontWeight: FontWeight.bold,
+                                            fontSize: 18)),
+                                yourBooleanValue
+                                    ? Text('Chat with your patients')
+                                    : Text("Advice from virtual doctor")
                               ],
                             ),
                           ),
@@ -377,22 +430,28 @@ class _homepagestate extends State<Homepage> {
                   ),
                 ),
                 GestureDetector(
-                  onTap: (){Navigator.push(context, MaterialPageRoute(builder: (context)=>firstaidlist()));},
+                  onTap: () {
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => firstaidlist()));
+                  },
                   child: Padding(
-                    padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 8),
+                    padding:
+                        const EdgeInsets.symmetric(vertical: 8, horizontal: 8),
                     child: Container(
                       height: 100,
                       width: 390,
                       decoration: BoxDecoration(
                         color: Colors.white,
-                        borderRadius: BorderRadius.circular(12.0), // Rounded corners
+                        borderRadius: BorderRadius.circular(12.0),
+                        // Rounded corners
                         border: Border.all(
                           color: Colors.black,
                           width: 2.0,
                         ),
                       ),
                       child: Row(
-
                         children: [
                           Padding(
                             padding: const EdgeInsets.fromLTRB(32, 16, 32, 16),
@@ -406,7 +465,10 @@ class _homepagestate extends State<Homepage> {
                             child: Column(
                               mainAxisAlignment: MainAxisAlignment.center,
                               children: [
-                                Text('First Aids',style: TextStyle(fontWeight: FontWeight.bold,fontSize: 18)),
+                                Text('First Aids',
+                                    style: TextStyle(
+                                        fontWeight: FontWeight.bold,
+                                        fontSize: 18)),
                                 Text("First aid tips for problems")
                               ],
                             ),
@@ -430,12 +492,14 @@ class _homepagestate extends State<Homepage> {
                   ),
                 ),
                 Padding(
-                  padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 8),
+                  padding:
+                      const EdgeInsets.symmetric(vertical: 8, horizontal: 8),
                   child: Container(
                     width: 390,
                     decoration: BoxDecoration(
                       color: Color.fromARGB(100, 125, 216, 197),
-                      borderRadius: BorderRadius.circular(12.0), // Rounded corners
+                      borderRadius: BorderRadius.circular(12.0),
+                      // Rounded corners
                       border: Border.all(
                         color: Colors.black,
                         width: 1.0,
@@ -449,7 +513,13 @@ class _homepagestate extends State<Homepage> {
                             mainAxisAlignment: MainAxisAlignment.spaceAround,
                             children: [
                               GestureDetector(
-                                onTap: (){Navigator.push(context, MaterialPageRoute(builder: (context)=>Faiddata(fname: "CPR")));},
+                                onTap: () {
+                                  Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                          builder: (context) =>
+                                              Faiddata(fname: "CPR")));
+                                },
                                 child: Container(
                                   height: 110,
                                   width: 110,
@@ -475,7 +545,13 @@ class _homepagestate extends State<Homepage> {
                                 ),
                               ),
                               GestureDetector(
-                                onTap: (){Navigator.push(context, MaterialPageRoute(builder: (context)=>Faiddata(fname: "Cuts & Grazes")));},
+                                onTap: () {
+                                  Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                          builder: (context) => Faiddata(
+                                              fname: "Cuts & Grazes")));
+                                },
                                 child: Container(
                                   height: 110,
                                   width: 110,
@@ -501,7 +577,13 @@ class _homepagestate extends State<Homepage> {
                                 ),
                               ),
                               GestureDetector(
-                                onTap: (){Navigator.push(context, MaterialPageRoute(builder: (context)=>Faiddata(fname: "Burns")));},
+                                onTap: () {
+                                  Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                          builder: (context) =>
+                                              Faiddata(fname: "Burns")));
+                                },
                                 child: Container(
                                   height: 110,
                                   width: 110,
@@ -535,7 +617,13 @@ class _homepagestate extends State<Homepage> {
                             mainAxisAlignment: MainAxisAlignment.spaceAround,
                             children: [
                               GestureDetector(
-                                onTap: (){Navigator.push(context, MaterialPageRoute(builder: (context)=>Faiddata(fname: "Bee Stings")));},
+                                onTap: () {
+                                  Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                          builder: (context) =>
+                                              Faiddata(fname: "Bee Stings")));
+                                },
                                 child: Container(
                                   height: 110,
                                   width: 110,
@@ -561,7 +649,13 @@ class _homepagestate extends State<Homepage> {
                                 ),
                               ),
                               GestureDetector(
-                                onTap: (){Navigator.push(context, MaterialPageRoute(builder: (context)=>Faiddata(fname: "Sprains")));},
+                                onTap: () {
+                                  Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                          builder: (context) =>
+                                              Faiddata(fname: "Sprains")));
+                                },
                                 child: Container(
                                   height: 110,
                                   width: 110,
@@ -587,7 +681,13 @@ class _homepagestate extends State<Homepage> {
                                 ),
                               ),
                               GestureDetector(
-                                onTap: (){Navigator.push(context, MaterialPageRoute(builder: (context)=>Faiddata(fname: "Leech Attacks")));},
+                                onTap: () {
+                                  Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                          builder: (context) => Faiddata(
+                                              fname: "Leech Attacks")));
+                                },
                                 child: Container(
                                   height: 110,
                                   width: 110,
@@ -621,7 +721,13 @@ class _homepagestate extends State<Homepage> {
                             mainAxisAlignment: MainAxisAlignment.spaceAround,
                             children: [
                               GestureDetector(
-                                onTap: (){Navigator.push(context, MaterialPageRoute(builder: (context)=>Faiddata(fname: "Splinters")));},
+                                onTap: () {
+                                  Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                          builder: (context) =>
+                                              Faiddata(fname: "Splinters")));
+                                },
                                 child: Container(
                                   height: 110,
                                   width: 110,
@@ -647,7 +753,13 @@ class _homepagestate extends State<Homepage> {
                                 ),
                               ),
                               GestureDetector(
-                                onTap: (){Navigator.push(context, MaterialPageRoute(builder: (context)=>Faiddata(fname: "Animal Bites")));},
+                                onTap: () {
+                                  Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                          builder: (context) =>
+                                              Faiddata(fname: "Animal Bites")));
+                                },
                                 child: Container(
                                   height: 110,
                                   width: 110,
@@ -673,7 +785,13 @@ class _homepagestate extends State<Homepage> {
                                 ),
                               ),
                               GestureDetector(
-                                onTap: (){Navigator.push(context, MaterialPageRoute(builder: (context)=>Faiddata(fname: "Nosebleeds")));},
+                                onTap: () {
+                                  Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                          builder: (context) =>
+                                              Faiddata(fname: "Nosebleeds")));
+                                },
                                 child: Container(
                                   height: 110,
                                   width: 110,

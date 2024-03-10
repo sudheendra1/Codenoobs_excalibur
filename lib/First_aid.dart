@@ -28,23 +28,20 @@ class _Firstaidstate extends State<First_aid> {
   late YoutubePlayerController _controller;
 
   List<String> parseInstructions(String paragraph) {
-
     List<RegExpMatch> matches = RegExp(r'\d+\)').allMatches(paragraph).toList();
 
     if (matches.isEmpty) return [paragraph.trim()];
 
     List<String> steps = [];
     for (int i = 0; i < matches.length; i++) {
-
       int start = matches[i].end;
-      int end = (i == matches.length - 1) ? paragraph.length : matches[i + 1].start;
+      int end =
+          (i == matches.length - 1) ? paragraph.length : matches[i + 1].start;
       steps.add(paragraph.substring(start, end).trim());
     }
 
-
     return steps.where((step) => step.isNotEmpty).toList();
   }
-
 
   @override
   void initState() {
@@ -93,7 +90,8 @@ class _Firstaidstate extends State<First_aid> {
                     ProgressBar(
                       isExpanded: true,
                       colors: ProgressBarColors(
-                          playedColor: Colors.redAccent, handleColor: Colors.red),
+                          playedColor: Colors.redAccent,
+                          handleColor: Colors.red),
                     ),
                     RemainingDuration(),
                     FullScreenButton(),
@@ -108,8 +106,14 @@ class _Firstaidstate extends State<First_aid> {
                   height: 20,
                 ),
                 Column(
-
-                  children: steps.expand((step) => [Text(step),SizedBox(height: 10,)]).toList(),
+                  children: steps
+                      .expand((step) => [
+                            Text(step),
+                            SizedBox(
+                              height: 10,
+                            )
+                          ])
+                      .toList(),
                 )
 
                 //Text(widget.steps),
@@ -119,7 +123,7 @@ class _Firstaidstate extends State<First_aid> {
         ),
       ),
       floatingActionButton: FloatingActionButton(
-        onPressed:_saveFirstAidLocally,
+        onPressed: _saveFirstAidLocally,
         child: const Icon(Icons.save),
       ),
     );
@@ -138,4 +142,3 @@ class _Firstaidstate extends State<First_aid> {
     );
   }
 }
-

@@ -1,29 +1,23 @@
-
-
 import 'dart:ffi';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
-
-class Auth_method{
-  final  FirebaseAuth _auth = FirebaseAuth.instance;
+class Auth_method {
+  final FirebaseAuth _auth = FirebaseAuth.instance;
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
 
-  Future<String>signup({
+  Future<String> signup({
     required String username,
     required String emailid,
     required String password,
     required bool Doctor,
-
-
-
-  })
-  async{
+  }) async {
     String res = "some error occured";
-    try{
-      if(emailid.isNotEmpty||password.isNotEmpty||username.isNotEmpty){
-        UserCredential cred = await _auth.createUserWithEmailAndPassword(email: emailid, password: password);
+    try {
+      if (emailid.isNotEmpty || password.isNotEmpty || username.isNotEmpty) {
+        UserCredential cred = await _auth.createUserWithEmailAndPassword(
+            email: emailid, password: password);
 
         await _firestore.collection('users').doc(cred.user!.uid).set({
           'username': username,
@@ -34,17 +28,12 @@ class Auth_method{
           'DOB': '',
           'Diseases': '',
           'is_doctor': Doctor
-
-
         });
         res = 'success';
       }
-    }
-    catch(err){
-      res=err.toString();
-
+    } catch (err) {
+      res = err.toString();
     }
     return res;
-
   }
 }

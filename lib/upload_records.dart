@@ -10,15 +10,14 @@ import 'package:pharmcare/pick_image.dart';
 import 'package:pharmcare/record_model.dart';
 import 'package:path/path.dart' as path;
 
-class upload_records extends StatefulWidget{
+class upload_records extends StatefulWidget {
   @override
   State<StatefulWidget> createState() {
     return _uploadstate();
   }
-
 }
 
-class _uploadstate extends State<upload_records>{
+class _uploadstate extends State<upload_records> {
   final _titlecontroller = TextEditingController();
   Uint8List? _file;
   File? file;
@@ -65,7 +64,6 @@ class _uploadstate extends State<upload_records>{
         });
   }
 
-
   void upload() async {
     setState(() {
       _isloadin = true;
@@ -86,10 +84,8 @@ class _uploadstate extends State<upload_records>{
       UploadTask? task = await uploadFile(file);
     }
 
-    String res = await Record_model().Upload(
-        title: _titlecontroller.text,
-        image: iurl,
-        pdfurl: pdf_url);
+    String res = await Record_model()
+        .Upload(title: _titlecontroller.text, image: iurl, pdfurl: pdf_url);
     if (res == 'success') {
       setState(() {
         _isloadin = false;
@@ -104,7 +100,6 @@ class _uploadstate extends State<upload_records>{
       Navigator.of(context).pop();
     }
   }
-
 
   Future<firebase_storage.UploadTask?>? uploadFile(File? file) async {
     if (file == null) {
@@ -135,63 +130,64 @@ class _uploadstate extends State<upload_records>{
   String getFileNameFromPath(String filePath) {
     return path.basename(filePath);
   }
+
   @override
   void dispose() {
     super.dispose();
     _titlecontroller.dispose();
   }
 
-
   @override
   Widget build(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.fromLTRB(16, 60, 16, 16),
-      child: Column(children: [
-        TextField(
-          controller: _titlecontroller,
-          maxLength: 20,
-          decoration: InputDecoration(hintText: 'Title'),
-        ),
-        SizedBox(height: 20,),
-        _file != null
-            ? Expanded(
-            flex: 1,
-            child: Container(
-              height: 200,
-              width: 200,
-              decoration: BoxDecoration(
-                  image: DecorationImage(
-                      image: MemoryImage(_file!), fit: BoxFit.fill)),
-            ))
-            : OutlinedButton(
-            onPressed: () => _selectimage(context),
-            child: Image.network(
-                "https://t4.ftcdn.net/jpg/04/81/13/43/360_F_481134373_0W4kg2yKeBRHNEklk4F9UXtGHdub3tYk.jpg"),
-            style: OutlinedButton.styleFrom(
-              fixedSize: Size.square(250),
-              shape: RoundedRectangleBorder(),
-            )),
-        SizedBox(height: 10,),
-        Row(
-          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-          children: [
-          ElevatedButton(
-              onPressed: () async {
-                final path = await FlutterDocumentPicker.openDocument();
-                print(path);
-                file = File(path!);
-                fileName= getFileNameFromPath(file!.path);
-              },
-              child: file!=null?Text(fileName):Text('Upload PDF')),
-
-          ElevatedButton(onPressed: upload, child: Text('Record')),
-
-        ],)
-
-
-
-      ],),
+      child: Column(
+        children: [
+          TextField(
+            controller: _titlecontroller,
+            maxLength: 20,
+            decoration: InputDecoration(hintText: 'Title'),
+          ),
+          SizedBox(
+            height: 20,
+          ),
+          _file != null
+              ? Expanded(
+                  flex: 1,
+                  child: Container(
+                    height: 200,
+                    width: 200,
+                    decoration: BoxDecoration(
+                        image: DecorationImage(
+                            image: MemoryImage(_file!), fit: BoxFit.fill)),
+                  ))
+              : OutlinedButton(
+                  onPressed: () => _selectimage(context),
+                  child: Image.network(
+                      "https://t4.ftcdn.net/jpg/04/81/13/43/360_F_481134373_0W4kg2yKeBRHNEklk4F9UXtGHdub3tYk.jpg"),
+                  style: OutlinedButton.styleFrom(
+                    fixedSize: Size.square(250),
+                    shape: RoundedRectangleBorder(),
+                  )),
+          SizedBox(
+            height: 10,
+          ),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            children: [
+              ElevatedButton(
+                  onPressed: () async {
+                    final path = await FlutterDocumentPicker.openDocument();
+                    print(path);
+                    file = File(path!);
+                    fileName = getFileNameFromPath(file!.path);
+                  },
+                  child: file != null ? Text(fileName) : Text('Upload PDF')),
+              ElevatedButton(onPressed: upload, child: Text('Record')),
+            ],
+          )
+        ],
+      ),
     );
   }
-
 }

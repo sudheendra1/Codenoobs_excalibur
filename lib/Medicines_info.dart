@@ -8,20 +8,21 @@ import 'package:pharmcare/home_page.dart';
 import 'package:pharmcare/medlist_temp.dart';
 import 'package:google_nav_bar/google_nav_bar.dart';
 import 'package:pharmcare/profile.dart';
+import 'package:pharmcare/records.dart';
 
-class medicineslist extends StatefulWidget{
+class medicineslist extends StatefulWidget {
   const medicineslist({super.key});
 
   @override
   State<StatefulWidget> createState() {
     return _medicinesliststate();
   }
-
 }
 
-class _medicinesliststate extends State<medicineslist>{
+class _medicinesliststate extends State<medicineslist> {
   Stream<List<dynamic>> fetchAllProducts(int limit) async* {
-    final response = await http.get(Uri.parse('http://192.168.29.200:5000/all_products?limit=$limit'));
+    final response = await http
+        .get(Uri.parse('http://192.168.29.200:5000/all_products?limit=$limit'));
 
     if (response.statusCode == 200) {
       var decodedResponse = json.decode(response.body);
@@ -31,24 +32,24 @@ class _medicinesliststate extends State<medicineslist>{
         throw Exception(
             'Expected a list but got ${decodedResponse.runtimeType}');
       }
-    }else {
+    } else {
       throw Exception('Failed to load products');
     }
   }
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(appBar: AppBar(elevation: 0.0, title: Text("Medicines"),
-
-      backgroundColor: Color.fromARGB(
-          100, 125, 216, 197),),
+    return Scaffold(
+      appBar: AppBar(
+        elevation: 0.0,
+        title: Text("Medicines"),
+        backgroundColor: Color.fromARGB(100, 125, 216, 197),
+      ),
       bottomNavigationBar: Container(
         color: Color.fromARGB(100, 125, 216, 197),
         child: Padding(
-          padding:
-          const EdgeInsets.symmetric(horizontal: 25.0, vertical: 4),
+          padding: const EdgeInsets.symmetric(horizontal: 25.0, vertical: 4),
           child: GNav(
-
             style: GnavStyle.oldSchool,
             textSize: 10,
 
@@ -76,17 +77,25 @@ class _medicinesliststate extends State<medicineslist>{
                     context,
                     PageRouteBuilder(
                         pageBuilder: (context, animation1, animation2) =>
+                            Record(),
+                        transitionDuration: Duration.zero,
+                        reverseTransitionDuration: Duration.zero));
+              }
+              if (index == 3) {
+                Navigator.pushReplacement(
+                    context,
+                    PageRouteBuilder(
+                        pageBuilder: (context, animation1, animation2) =>
                             Profile(),
                         transitionDuration: Duration.zero,
                         reverseTransitionDuration: Duration.zero));
               }
-
             },
             //backgroundColor: Color.fromARGB(100, 125, 216, 197),
             color: Colors.black,
             activeColor: Colors.black,
             tabBorderRadius: 10,
-            tabBackgroundColor:Color.fromARGB(200, 125, 216, 197),
+            tabBackgroundColor: Color.fromARGB(200, 125, 216, 197),
             haptic: true,
             hoverColor: Color.fromARGB(150, 125, 216, 197),
             padding: EdgeInsets.symmetric(horizontal: 15, vertical: 5),
@@ -104,13 +113,16 @@ class _medicinesliststate extends State<medicineslist>{
                 text: 'Diagnose',
                 gap: 10,
               ),
-
+              GButton(
+                icon: Icons.medical_information,
+                text: 'Records',
+                gap: 10,
+              ),
               GButton(
                 icon: Icons.person,
                 text: 'Profile',
                 gap: 10,
               ),
-
             ],
           ),
         ),
@@ -135,7 +147,7 @@ class _medicinesliststate extends State<medicineslist>{
             );
           }
         },
-      ),);
+      ),
+    );
   }
-
 }
