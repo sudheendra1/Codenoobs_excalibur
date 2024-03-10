@@ -26,17 +26,7 @@ class _PDFState extends State<PDF> {
 
   @override
   Widget build(BuildContext context) {
-    return WillPopScope(
-      onWillPop: () async {
-        Navigator.push(
-            context,
-            PageRouteBuilder(
-                pageBuilder: (context, animation1, animation2) => Record(),
-                transitionDuration: Duration.zero,
-                reverseTransitionDuration: Duration.zero));
-        return true;
-      },
-      child: Center(
+    return  Center(
         child: widget.img_url == ''
             ? SfPdfViewer.network(
                 widget.pdf_url,
@@ -48,7 +38,7 @@ class _PDFState extends State<PDF> {
                 width: 500,
                 fit: BoxFit.cover,
               ),
-      ),
-    );
+      );
+
   }
 }

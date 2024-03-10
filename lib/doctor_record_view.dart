@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:pharmcare/Doctor.dart';
 import 'package:pharmcare/home_page.dart';
 import 'package:pharmcare/record_viewer.dart';
 import 'package:pharmcare/share_modalsheet.dart';
@@ -45,7 +46,7 @@ class _record_doctorstate extends State<Record_doctor> {
         Navigator.push(
             context,
             PageRouteBuilder(
-                pageBuilder: (context, animation1, animation2) => Homepage(),
+                pageBuilder: (context, animation1, animation2) => Doctor(),
                 transitionDuration: Duration.zero,
                 reverseTransitionDuration: Duration.zero));
         return true;
@@ -80,9 +81,9 @@ class _record_doctorstate extends State<Record_doctor> {
                   itemBuilder: (context, index) {
                     final document = snapshot.data!.docs[index];
                     final data = document.data() as Map<String, dynamic>;
-                    final title = data['Title'];
-                    final img_url = data['image_url'];
-                    final pdf_url = data['pdf_url'];
+                    final title = data['title'];
+                    final img_url = data['imageUrl'];
+                    final pdf_url = data['pdfurl'];
                     return Container(
                       margin: const EdgeInsets.all(8),
                       color: Color.fromARGB(100, 125, 216, 197),

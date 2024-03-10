@@ -54,7 +54,7 @@ class _sharemodalsheetstate extends State<sharemodalsheet> {
                       child: CircularProgressIndicator(),
                     );
                   }
-                  return ListView.builder(
+                  return snapshot=={}?Text('Start chat with doctor to share'):ListView.builder(
                       itemCount: snapshot.data!.docs.length,
                       itemBuilder: (context, index) {
                         DocumentSnapshot document = snapshot.data!.docs[index];

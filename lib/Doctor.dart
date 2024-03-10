@@ -4,6 +4,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:pharmcare/Diagnosis.dart';
 import 'package:pharmcare/chat_page.dart';
+import 'package:pharmcare/doctor_record_view.dart';
 import 'package:pharmcare/doctors_view.dart';
 import 'package:pharmcare/home_page.dart';
 import 'package:google_nav_bar/google_nav_bar.dart';
@@ -170,10 +171,7 @@ class _Doctorstate extends State<Doctor> {
                                       Navigator.push(
                                         context,
                                         MaterialPageRoute(
-                                          builder: (context) => chat_page(
-                                              receiveruserid: data['IDS'][0],
-                                              doc_name: data['doctor_name'],
-                                              pat_name: data['patient_name']),
+                                          builder: (context) => Record_doctor(pat_name: data['patient_name'], doctorid: data['IDS'][1], patid: data['IDS'][0]),
                                         ),
                                       );
                                     },
