@@ -1,9 +1,8 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
+import 'package:get/get.dart';
 import 'package:youtube_player_flutter/youtube_player_flutter.dart';
-import 'package:sqflite/sqflite.dart';
 import 'package:pharmcare/First_aid_database.dart';
+import 'package:pharmcare/network_controller.dart';
 
 class First_aid extends StatefulWidget {
   const First_aid(
@@ -122,10 +121,16 @@ class _Firstaidstate extends State<First_aid> {
           ),
         ),
       ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: _saveFirstAidLocally,
-        child: const Icon(Icons.save),
-      ),
+      floatingActionButton: GetBuilder<NetworkController>(
+        builder: (networkcontroller){
+          if(networkcontroller.hasConnection){
+            return FloatingActionButton(onPressed: _saveFirstAidLocally,child: const Icon(Icons.save),);
+          }
+          else{
+            return Container();
+          }
+        },
+      )
     );
   }
 

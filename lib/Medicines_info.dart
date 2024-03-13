@@ -22,7 +22,7 @@ class medicineslist extends StatefulWidget {
 class _medicinesliststate extends State<medicineslist> {
   Stream<List<dynamic>> fetchAllProducts(int limit) async* {
     final response = await http
-        .get(Uri.parse('http://192.168.29.200:5000/all_products?limit=$limit'));
+        .get(Uri.parse('https://pharmcare-api-deployment.onrender.com/all_products?limit=$limit'));
 
     if (response.statusCode == 200) {
       var decodedResponse = json.decode(response.body);

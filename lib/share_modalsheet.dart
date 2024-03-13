@@ -71,7 +71,7 @@ class _sharemodalsheetstate extends State<sharemodalsheet> {
                                 data['patient_name'],
                                 widget.pdf_url,
                                 widget.img_url);
-                            showSnackbar('Share Successfully', context);
+                            showSnackbar('Shared Successfully', context);
                             Navigator.of(context).pop();
                           },
                         );

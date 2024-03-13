@@ -12,6 +12,9 @@ class Auth_method {
     required String emailid,
     required String password,
     required bool Doctor,
+    required String speciality,
+    required String degree,
+    required String experience
   }) async {
     String res = "some error occured";
     try {
@@ -23,11 +26,21 @@ class Auth_method {
           'username': username,
           'email_id': emailid,
           'Uid': cred.user!.uid,
-          'image_url': '',
-          'Allergies': '',
+          'image_url': 'none',
+          'Allergies': 'none',
           'DOB': '',
-          'Diseases': '',
-          'is_doctor': Doctor
+          'Diseases': 'none',
+          'is_doctor': Doctor,
+          'speciality': speciality??'not applicable',
+          'degree': degree,
+          'experience': experience,
+          'About':'',
+          'college':'',
+          'Other_speciality':'',
+          'Working':'',
+          'Previous_work':'',
+          'fees':'',
+
         });
         res = 'success';
       }

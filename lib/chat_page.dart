@@ -75,8 +75,8 @@ class _chatpagestate extends State<chat_page> {
           widget.doc_name,
           widget.pat_name ?? "patient",
           username,
-          replyImageUrl ?? messageToReplyTo,
-          imageUrl!);
+          replyImageUrl ?? messageToReplyTo??'',
+          imageUrl??'');
 
       msgcontroller.clear();
       setState(() {

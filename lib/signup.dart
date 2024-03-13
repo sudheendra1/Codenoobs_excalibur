@@ -34,8 +34,8 @@ class signupstate extends State<Signup> {
   var _enteredpassword = '';
   var _enteredusername = '';
   var _enteredspeciality = 'Select speciality';
-  var _entereddegree = '';
-  var _entered_experience = '';
+  var _entereddegree = 'not applicable';
+  var _entered_experience = 'not applicable';
   final specialities = <String>[
     'Allergist',
     'Cardiologist',
@@ -76,7 +76,10 @@ class signupstate extends State<Signup> {
             username: _enteredusername,
             emailid: _enteredemail,
             password: _enteredpassword,
-            Doctor: _isDoctor);
+            Doctor: _isDoctor,
+            speciality: _enteredspeciality,
+            degree: _entereddegree,
+            experience:_entered_experience,);
 
         setState(() {
           _isloading = false;
@@ -100,8 +103,8 @@ class signupstate extends State<Signup> {
             content: Text('User created successfully'),
             duration: Duration(milliseconds: 8),
           ));
-          Navigator.push(context,
-              MaterialPageRoute(builder: (context) => const personel()));
+          /*Navigator.push(context,
+              MaterialPageRoute(builder: (context) => const personel()));*/
           setState(() {
             _isloading = false;
           });

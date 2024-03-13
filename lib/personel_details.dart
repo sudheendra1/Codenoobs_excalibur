@@ -4,6 +4,7 @@ import 'package:intl/intl.dart';
 import 'package:pharmcare/home_page.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:pharmcare/profile.dart';
 
 class personel extends StatefulWidget {
   const personel({super.key});
@@ -81,7 +82,13 @@ class _personelstate extends State<personel> {
   Widget build(BuildContext context) {
     return WillPopScope(
       onWillPop: () async {
-        return false;
+        Navigator.pushReplacement(
+            context,
+            PageRouteBuilder(
+                pageBuilder: (context, animation1, animation2) => Profile(),
+                transitionDuration: Duration.zero,
+                reverseTransitionDuration: Duration.zero));
+        return true;
       },
       child: Scaffold(
         appBar: AppBar(

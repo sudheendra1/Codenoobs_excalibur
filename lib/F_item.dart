@@ -19,7 +19,7 @@ class _FaiditemState extends State<Faiditem> {
   Widget build(BuildContext context) {
     return WillPopScope(
       onWillPop: () async {
-        Navigator.push(
+        Navigator.pushReplacement(
             context,
             PageRouteBuilder(
                 pageBuilder: (context, animation1, animation2) => Homepage(),

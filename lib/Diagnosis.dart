@@ -154,8 +154,7 @@ class _chatbotstate extends State<Chatbot> {
     'inflammatory_nails',
     'blister',
     'red_sore_around_nose',
-    'yellow_crust_ooze',
-    'none'
+    'yellow_crust_ooze'
   ];
   final selectedSymptoms = <String>[];
   String? prediction;
@@ -190,7 +189,7 @@ class _chatbotstate extends State<Chatbot> {
       return;
     }
     final response = await http.post(
-      Uri.parse('https://pharmcare-dp.onrender.com/predict'),
+      Uri.parse('https://pharmcare-dpv2-deployment.onrender.com/predict_disease'),
       body: jsonEncode({'symptoms': selectedSymptoms}),
       headers: {"Content-Type": "application/json"},
     );

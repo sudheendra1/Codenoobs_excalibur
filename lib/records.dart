@@ -1,7 +1,10 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:google_nav_bar/google_nav_bar.dart';
+import 'package:pharmcare/Diagnosis.dart';
 import 'package:pharmcare/home_page.dart';
+import 'package:pharmcare/profile.dart';
 import 'package:pharmcare/record_viewer.dart';
 import 'package:pharmcare/share_modalsheet.dart';
 import 'package:pharmcare/upload_records.dart';
@@ -17,7 +20,7 @@ class _recordstate extends State<Record> {
   void _addoverlay() {
     showModalBottomSheet(context: context, builder: (ctx) => upload_records());
   }
-
+  int _currentindex = 2;
   @override
   Widget build(BuildContext context) {
     return WillPopScope(
@@ -35,6 +38,89 @@ class _recordstate extends State<Record> {
           elevation: 0.0,
           title: const Text('Records'),
           backgroundColor: Color.fromARGB(100, 125, 216, 197),
+        ),
+        bottomNavigationBar: Container(
+          color: Color.fromARGB(100, 125, 216, 197),
+          child: Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 25.0, vertical: 4),
+            child: GNav(
+              selectedIndex: _currentindex,
+              style: GnavStyle.oldSchool,
+              textSize: 10,
+
+              onTabChange: (index) {
+                if (index == 0) {
+                  Navigator.pushReplacement(
+                      context,
+                      PageRouteBuilder(
+                          pageBuilder: (context, animation1, animation2) =>
+                              Homepage(),
+                          transitionDuration: Duration.zero,
+                          reverseTransitionDuration: Duration.zero));
+                }
+                if (index == 1) {
+                  Navigator.pushReplacement(
+                      context,
+                      PageRouteBuilder(
+                          pageBuilder: (context, animation1, animation2) =>
+                              Chatbot(),
+                          transitionDuration: Duration.zero,
+                          reverseTransitionDuration: Duration.zero));
+                }
+                if (index == 2) {
+                  Navigator.pushReplacement(
+                      context,
+                      PageRouteBuilder(
+                          pageBuilder: (context, animation1, animation2) =>
+                              Record(),
+                          transitionDuration: Duration.zero,
+                          reverseTransitionDuration: Duration.zero));
+                }
+                if (index == 3) {
+                  Navigator.pushReplacement(
+                      context,
+                      PageRouteBuilder(
+                          pageBuilder: (context, animation1, animation2) =>
+                              Profile(),
+                          transitionDuration: Duration.zero,
+                          reverseTransitionDuration: Duration.zero));
+                }
+              },
+              //backgroundColor: Color.fromARGB(100, 125, 216, 197),
+              color: Colors.black,
+              activeColor: Colors.black,
+              tabBorderRadius: 10,
+              tabBackgroundColor: Color.fromARGB(200, 125, 216, 197),
+              haptic: true,
+              hoverColor: Color.fromARGB(150, 125, 216, 197),
+              padding: EdgeInsets.symmetric(horizontal: 15, vertical: 5),
+              //tabBackgroundColor: Colors.blueGrey.shade900,
+
+              duration: Duration(milliseconds: 900),
+              tabs: const [
+                GButton(
+                  icon: Icons.home,
+                  text: 'Home',
+                  gap: 10,
+                ),
+                GButton(
+                  icon: Icons.chat_rounded,
+                  text: 'Diagnose',
+                  gap: 10,
+                ),
+                GButton(
+                  icon: Icons.medical_information,
+                  text: 'Records',
+                  gap: 10,
+                ),
+                GButton(
+                  icon: Icons.person,
+                  text: 'Profile',
+                  gap: 10,
+                ),
+              ],
+            ),
+          ),
         ),
         body: StreamBuilder(
             stream: FirebaseFirestore.instance
