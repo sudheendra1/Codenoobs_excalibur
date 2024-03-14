@@ -2,13 +2,14 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 import 'package:pharmcare/First_aid.dart';
-
+import 'package:pharmcare/First_aid_database.dart';
 import 'package:pharmcare/home_page.dart';
 
 class Faiditem extends StatefulWidget {
-  Faiditem({super.key, required this.snap});
+  Faiditem({super.key, required this.snap,required this.saved});
 
   final snap;
+  final saved;
 
   @override
   State<Faiditem> createState() => _FaiditemState();
@@ -42,12 +43,17 @@ class _FaiditemState extends State<Faiditem> {
           color: Color.fromARGB(100, 125, 216, 197),
           child: Padding(
               padding: EdgeInsets.symmetric(horizontal: 16, vertical: 20),
-              child: Center(
-                  child: Text(
+              child: widget.saved?Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [Text(
                 widget.snap['name'],
                 overflow: TextOverflow.ellipsis,
                 style: TextStyle(fontFamily: 'Tommy', fontSize: 18),
-              ))),
+              ),IconButton(onPressed: (){FirstAidDatabase.deleteFirstAidByName(widget.snap["name"]);} ,icon: Icon(Icons.delete),),]):Text(
+                widget.snap['name'],
+                overflow: TextOverflow.ellipsis,
+                style: TextStyle(fontFamily: 'Tommy', fontSize: 18),
+              ),),
         ),
       ),
     );

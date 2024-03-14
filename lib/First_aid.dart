@@ -1,3 +1,6 @@
+import 'dart:io';
+import 'package:path_provider/path_provider.dart';
+import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:youtube_player_flutter/youtube_player_flutter.dart';
@@ -25,6 +28,7 @@ class First_aid extends StatefulWidget {
 
 class _Firstaidstate extends State<First_aid> {
   late YoutubePlayerController _controller;
+  late File _videoFile;
 
   List<String> parseInstructions(String paragraph) {
     List<RegExpMatch> matches = RegExp(r'\d+\)').allMatches(paragraph).toList();
@@ -58,7 +62,7 @@ class _Firstaidstate extends State<First_aid> {
     List<String> steps = parseInstructions(widget.steps);
     return Scaffold(
       body: Padding(
-        padding: const EdgeInsets.all(8.0),
+        padding: const EdgeInsets.symmetric(vertical: 16,horizontal: 8),
         child: Container(
           child: SingleChildScrollView(
             child: Column(

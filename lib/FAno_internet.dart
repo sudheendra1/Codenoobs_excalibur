@@ -29,7 +29,7 @@ class FANI extends StatelessWidget{
               return ListView.builder(
                   itemCount: firstAidData.length,
                   itemBuilder: (context, index) => Faiditem(
-                    snap: firstAidData[index],
+                    snap: firstAidData[index], saved: true,
                   ));
             }
           },

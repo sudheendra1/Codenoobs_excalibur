@@ -19,9 +19,7 @@ class NetworkController extends GetxController {
     final bool wasConnected = _hasConnection;
     _hasConnection = status != InternetConnectionStatus.disconnected;
     update();
-    if (!wasConnected && _hasConnection) {
-      _showReloadPrompt(); // Show reload prompt when connection is reestablished
-    }
+
     if (status == InternetConnectionStatus.disconnected) {
       Get.rawSnackbar(
         messageText: const Text('Please check internet connection'),
@@ -39,21 +37,5 @@ class NetworkController extends GetxController {
     }
   }
 
-  void _showReloadPrompt() {
-    // Show a dialog or a snackbar to notify the user about the reconnection
-    // Provide an option to reload the app
-    // Example: show a snackbar with a reload button
-    Get.snackbar(
-      'Internet Connection Restored',
-      'You are now connected to the internet. Do you want to reload the app?',
-      snackPosition: SnackPosition.BOTTOM,
-      duration: const Duration(days: 1),
-      mainButton: TextButton(
-        onPressed: () {
-          Get.offAll(Get.currentRoute); // Reload the app
-        },
-        child: Text('Reload'),
-      ),
-    );
-  }
+
 }

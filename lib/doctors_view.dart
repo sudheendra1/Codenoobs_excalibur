@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:pharmcare/chat_page.dart';
+import 'package:pharmcare/doctor_profile.dart';
 
 class doctors_view extends StatefulWidget {
   const doctors_view({super.key, required this.snap});
@@ -81,6 +82,15 @@ class _doctorviewstate extends State<doctors_view> {
                   title: Text(doc['Name']),
                   subtitle:
                       Text('${doc['Degree']}, ${doc['Experience']} experience'),
+                  leading: GestureDetector(
+                    onTap: (){Navigator.pushReplacement(
+                        context,
+                        PageRouteBuilder(
+                            pageBuilder: (context, animation1, animation2) =>
+                                Doctor_profile(url: doc['img_url'], uid: doc['UID'],doc_name: doc['Name'],pat_name: patient,),
+                            transitionDuration: Duration.zero,
+                            reverseTransitionDuration: Duration.zero));},
+                    child: CircleAvatar(backgroundImage: NetworkImage(doc['img_url']),backgroundColor: Colors.grey,),),
                 );
               },
             ),

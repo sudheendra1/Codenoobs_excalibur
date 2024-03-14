@@ -1,6 +1,4 @@
-import 'package:flutter/material.dart';
 import 'package:sqflite/sqflite.dart';
-import 'package:youtube_player_flutter/youtube_player_flutter.dart';
 import 'package:path/path.dart';
 
 class FirstAidDatabase {
@@ -51,5 +49,13 @@ class FirstAidDatabase {
 
     // Delete the database file
     await deleteDatabase(path);
+  }
+  static Future<void> deleteFirstAidByName(String name) async {
+    final Database db = await database;
+    await db.delete(
+      'first_aid',
+      where: 'name = ?',
+      whereArgs: [name],
+    );
   }
 }

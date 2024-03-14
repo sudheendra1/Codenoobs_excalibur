@@ -134,7 +134,7 @@ class _firstaidliststate extends State<firstaidlist> {
                 return ListView.builder(
                     itemCount: snapshot.data!.docs.length,
                     itemBuilder: (context, index) => Faiditem(
-                          snap: snapshot.data!.docs[index].data(),
+                          snap: snapshot.data!.docs[index].data(), saved: false,
                         ));
               },
             ),
@@ -152,7 +152,7 @@ class _firstaidliststate extends State<firstaidlist> {
                   return ListView.builder(
                       itemCount: firstAidData.length,
                       itemBuilder: (context, index) => Faiditem(
-                            snap: firstAidData[index],
+                            snap: firstAidData[index], saved: true,
                           ));
                 }
               },

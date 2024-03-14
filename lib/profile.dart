@@ -208,391 +208,408 @@ class _profilestate extends State<Profile> {
                         .ref()
                         .child('User-images')
                         .child('${FirebaseAuth.instance.currentUser!.uid}.jpg');
-                    TaskSnapshot snap = await storageref.putData(_selectedimage!);
+                    TaskSnapshot snap =
+                        await storageref.putData(_selectedimage!);
                     String imageurl = await snap.ref.getDownloadURL();
-          
+
                     FirebaseFirestore.instance
                         .collection('users')
                         .doc(user.uid)
                         .update({'image_url': imageurl});
+                    FirebaseFirestore.instance
+                        .collection('Doctors')
+                        .doc(speciality)
+                        .collection('doctors_list')
+                        .doc(user.uid)
+                        .update({'img_url': imageurl});
                   },
                 ),
                 const SizedBox(
                   height: 20,
                 ),
-                 StreamBuilder(
-                    stream: FirebaseFirestore.instance
-                        .collection('users')
-                        .doc(user.uid)
-                        .snapshots(),
-                    builder: (context, snapshot) {
-                      if (snapshot.hasError) {
-                        return const Text('Something went wrong');
-                      }
-                      if (snapshot.connectionState == ConnectionState.waiting) {
-                        return const Center(
-                          child: CircularProgressIndicator(),
-                        );
-                      } else {
-                        Map<String, dynamic> doc =
-                            snapshot.data!.data() as Map<String, dynamic>;
-                        return !yourBooleanValue?Column(
-                          children: [
-                            Row(
+                StreamBuilder(
+                  stream: FirebaseFirestore.instance
+                      .collection('users')
+                      .doc(user.uid)
+                      .snapshots(),
+                  builder: (context, snapshot) {
+                    if (snapshot.hasError) {
+                      return const Text('Something went wrong');
+                    }
+                    if (snapshot.connectionState == ConnectionState.waiting) {
+                      return const Center(
+                        child: CircularProgressIndicator(),
+                      );
+                    } else {
+                      Map<String, dynamic> doc =
+                          snapshot.data!.data() as Map<String, dynamic>;
+                      return !yourBooleanValue
+                          ? Column(
                               children: [
-                                const Text('USERNAME:',
-                                    style:
-                                        TextStyle(fontWeight: FontWeight.bold)),
-                                SizedBox(
-                                  width: 5,
+                                Row(
+                                  children: [
+                                    const Text('USERNAME:',
+                                        style: TextStyle(
+                                            fontWeight: FontWeight.bold)),
+                                    SizedBox(
+                                      width: 5,
+                                    ),
+                                    Text(
+                                      doc['username'],
+                                      maxLines: 1,
+                                    ),
+                                  ],
                                 ),
-                                Text(
-                                  doc['username'],
-                                  maxLines: 1,
+                                const SizedBox(
+                                  height: 20,
                                 ),
-                              ],
-                            ),
-                            const SizedBox(
-                              height: 20,
-                            ),
-                            Row(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                const Text('Date of Birth:',
-                                    style:
-                                        TextStyle(fontWeight: FontWeight.bold)),
-                                SizedBox(
-                                  width: 5,
-                                ),
-                                Expanded(
-                                    child: Text(
-                                  doc['DOB'],
-                                  maxLines: 4,
-                                  overflow: TextOverflow.clip,
-                                )),
-                              ],
-                            ),
-                            const SizedBox(
-                              height: 20,
-                            ),
-                            Row(
-                              children: [
-                                const Text('Email-Id:',
-                                    style:
-                                        TextStyle(fontWeight: FontWeight.bold)),
-                                SizedBox(
-                                  width: 5,
-                                ),
-                                Text(
-                                  doc['email_id'],
-                                  maxLines: 1,
-                                ),
-                              ],
-                            ),
-                            const SizedBox(
-                              height: 20,
-                            ),
-                            Row(
-                              children: [
-                                const Text('Gender:',
-                                    style:
-                                        TextStyle(fontWeight: FontWeight.bold)),
-                                SizedBox(
-                                  width: 5,
-                                ),
-                                Text(
-                                  doc['gender'],
-                                  maxLines: 1,
-                                ),
-                              ],
-                            ),
-                            const SizedBox(
-                              height: 20,
-                            ),
-                            Row(
-                              children: [
-                                const Text('Allergies:',
-                                    style:
-                                        TextStyle(fontWeight: FontWeight.bold)),
-                                SizedBox(
-                                  width: 5,
-                                ),
-                                Text(
-                                  doc['Allergies'],
-                                  maxLines: 1,
-                                ),
-                              ],
-                            ),
-                            const SizedBox(
-                              height: 20,
-                            ),
-                            Row(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                const Text(
-                                  'Diseases:',
-                                  style: TextStyle(fontWeight: FontWeight.bold),
-                                ),
-                                SizedBox(
-                                  width: 5,
-                                ),
-                                Text(doc['Diseases'], maxLines: 1),
-                              ],
-                            ),
-                            const SizedBox(
-                              height: 20,
-                            ),
-                          ],
-                        ):Column(
-                          children: [
-                            Row(
-                              children: [
-                                const Text('About:',
-                                    style:
-                                    TextStyle(fontWeight: FontWeight.bold)),
-                                SizedBox(
-                                  width: 5,
-                                ),
-                                Text(
-                                  doc['About'],
-          
-                                ),
-                              ],
-                            ),
-                            const SizedBox(
-                              height: 20,
-                            ),
-                            Row(
-                              children: [
-                                const Text('USERNAME:',
-                                    style:
-                                    TextStyle(fontWeight: FontWeight.bold)),
-                                SizedBox(
-                                  width: 5,
-                                ),
-                                Text(
-                                  doc['username'],
-                                  maxLines: 1,
-                                ),
-                              ],
-                            ),
-                            const SizedBox(
-                              height: 20,
-                            ),
-                            Row(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                const Text('Date of Birth:',
-                                    style:
-                                    TextStyle(fontWeight: FontWeight.bold)),
-                                SizedBox(
-                                  width: 5,
-                                ),
-                                Expanded(
-                                    child: Text(
+                                Row(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    const Text('Date of Birth:',
+                                        style: TextStyle(
+                                            fontWeight: FontWeight.bold)),
+                                    SizedBox(
+                                      width: 5,
+                                    ),
+                                    Expanded(
+                                        child: Text(
                                       doc['DOB'],
                                       maxLines: 4,
                                       overflow: TextOverflow.clip,
                                     )),
+                                  ],
+                                ),
+                                const SizedBox(
+                                  height: 20,
+                                ),
+                                Row(
+                                  children: [
+                                    const Text('Email-Id:',
+                                        style: TextStyle(
+                                            fontWeight: FontWeight.bold)),
+                                    SizedBox(
+                                      width: 5,
+                                    ),
+                                    Text(
+                                      doc['email_id'],
+                                      maxLines: 1,
+                                    ),
+                                  ],
+                                ),
+                                const SizedBox(
+                                  height: 20,
+                                ),
+                                Row(
+                                  children: [
+                                    const Text('Gender:',
+                                        style: TextStyle(
+                                            fontWeight: FontWeight.bold)),
+                                    SizedBox(
+                                      width: 5,
+                                    ),
+                                    Text(
+                                      doc['gender'],
+                                      maxLines: 1,
+                                    ),
+                                  ],
+                                ),
+                                const SizedBox(
+                                  height: 20,
+                                ),
+                                Row(
+                                  children: [
+                                    const Text('Allergies:',
+                                        style: TextStyle(
+                                            fontWeight: FontWeight.bold)),
+                                    SizedBox(
+                                      width: 5,
+                                    ),
+                                    Text(
+                                      doc['Allergies'],
+                                      maxLines: 1,
+                                    ),
+                                  ],
+                                ),
+                                const SizedBox(
+                                  height: 20,
+                                ),
+                                Row(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    const Text(
+                                      'Diseases:',
+                                      style: TextStyle(
+                                          fontWeight: FontWeight.bold),
+                                    ),
+                                    SizedBox(
+                                      width: 5,
+                                    ),
+                                    Text(doc['Diseases'], maxLines: 1),
+                                  ],
+                                ),
+                                const SizedBox(
+                                  height: 20,
+                                ),
                               ],
-                            ),
-                            const SizedBox(
-                              height: 20,
-                            ),
-                            Row(
+                            )
+                          : Column(
                               children: [
-                                const Text('Email-Id:',
-                                    style:
-                                    TextStyle(fontWeight: FontWeight.bold)),
-                                SizedBox(
-                                  width: 5,
+                                Row(
+                                  children: [
+                                    const Text('About:',
+                                        style: TextStyle(
+                                            fontWeight: FontWeight.bold)),
+                                    SizedBox(
+                                      width: 5,
+                                    ),
+                                    Text(
+                                      doc['About'],
+                                    ),
+                                  ],
                                 ),
-                                Text(
-                                  doc['email_id'],
-                                  maxLines: 1,
+                                const SizedBox(
+                                  height: 20,
+                                ),
+                                Row(
+                                  children: [
+                                    const Text('USERNAME:',
+                                        style: TextStyle(
+                                            fontWeight: FontWeight.bold)),
+                                    SizedBox(
+                                      width: 5,
+                                    ),
+                                    Text(
+                                      doc['username'],
+                                      maxLines: 1,
+                                    ),
+                                  ],
+                                ),
+                                const SizedBox(
+                                  height: 20,
+                                ),
+                                Row(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    const Text('Date of Birth:',
+                                        style: TextStyle(
+                                            fontWeight: FontWeight.bold)),
+                                    SizedBox(
+                                      width: 5,
+                                    ),
+                                    Expanded(
+                                        child: Text(
+                                      doc['DOB'],
+                                      maxLines: 4,
+                                      overflow: TextOverflow.clip,
+                                    )),
+                                  ],
+                                ),
+                                const SizedBox(
+                                  height: 20,
+                                ),
+                                Row(
+                                  children: [
+                                    const Text('Email-Id:',
+                                        style: TextStyle(
+                                            fontWeight: FontWeight.bold)),
+                                    SizedBox(
+                                      width: 5,
+                                    ),
+                                    Text(
+                                      doc['email_id'],
+                                      maxLines: 1,
+                                    ),
+                                  ],
+                                ),
+                                const SizedBox(
+                                  height: 20,
+                                ),
+                                Row(
+                                  children: [
+                                    const Text('Gender:',
+                                        style: TextStyle(
+                                            fontWeight: FontWeight.bold)),
+                                    SizedBox(
+                                      width: 5,
+                                    ),
+                                    Text(
+                                      doc['gender'],
+                                      maxLines: 1,
+                                    ),
+                                  ],
+                                ),
+                                const SizedBox(
+                                  height: 20,
+                                ),
+                                Row(
+                                  children: [
+                                    const Text('Experience:',
+                                        style: TextStyle(
+                                            fontWeight: FontWeight.bold)),
+                                    SizedBox(
+                                      width: 5,
+                                    ),
+                                    Text(
+                                      doc['experience'],
+                                      maxLines: 1,
+                                    ),
+                                  ],
+                                ),
+                                const SizedBox(
+                                  height: 20,
+                                ),
+                                Row(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    const Text(
+                                      'Degree:',
+                                      style: TextStyle(
+                                          fontWeight: FontWeight.bold),
+                                    ),
+                                    SizedBox(
+                                      width: 5,
+                                    ),
+                                    Text(doc['degree'], maxLines: 1),
+                                  ],
+                                ),
+                                const SizedBox(
+                                  height: 20,
+                                ),
+                                Row(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    const Text(
+                                      'Medical College:',
+                                      style: TextStyle(
+                                          fontWeight: FontWeight.bold),
+                                    ),
+                                    SizedBox(
+                                      width: 5,
+                                    ),
+                                    Text(doc['college'], maxLines: 1),
+                                  ],
+                                ),
+                                const SizedBox(
+                                  height: 20,
+                                ),
+                                Row(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    const Text(
+                                      'Other Expertize:',
+                                      style: TextStyle(
+                                          fontWeight: FontWeight.bold),
+                                    ),
+                                    SizedBox(
+                                      width: 5,
+                                    ),
+                                    Text(doc['Other_speciality']),
+                                  ],
+                                ),
+                                const SizedBox(
+                                  height: 20,
+                                ),
+                                Row(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    const Text(
+                                      'Currently Working at:',
+                                      style: TextStyle(
+                                          fontWeight: FontWeight.bold),
+                                    ),
+                                    SizedBox(
+                                      width: 5,
+                                    ),
+                                    Text(doc['Working'], maxLines: 1),
+                                  ],
+                                ),
+                                const SizedBox(
+                                  height: 20,
+                                ),
+                                Row(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    const Text(
+                                      'Previous Work Experience:',
+                                      style: TextStyle(
+                                          fontWeight: FontWeight.bold),
+                                    ),
+                                    SizedBox(
+                                      width: 5,
+                                    ),
+                                    Text(doc['Previous_work']),
+                                  ],
+                                ),
+                                const SizedBox(
+                                  height: 20,
+                                ),
+                                Row(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    const Text(
+                                      'Fees:',
+                                      style: TextStyle(
+                                          fontWeight: FontWeight.bold),
+                                    ),
+                                    SizedBox(
+                                      width: 5,
+                                    ),
+                                    Text(doc['fees'], maxLines: 1),
+                                  ],
+                                ),
+                                const SizedBox(
+                                  height: 20,
                                 ),
                               ],
-                            ),
-                            const SizedBox(
-                              height: 20,
-                            ),
-                            Row(
-                              children: [
-                                const Text('Gender:',
-                                    style:
-                                    TextStyle(fontWeight: FontWeight.bold)),
-                                SizedBox(
-                                  width: 5,
-                                ),
-                                Text(
-                                  doc['gender'],
-                                  maxLines: 1,
-                                ),
-                              ],
-                            ),
-                            const SizedBox(
-                              height: 20,
-                            ),
-                            Row(
-                              children: [
-                                const Text('Experience:',
-                                    style:
-                                    TextStyle(fontWeight: FontWeight.bold)),
-                                SizedBox(
-                                  width: 5,
-                                ),
-                                Text(
-                                  doc['experience'],
-                                  maxLines: 1,
-                                ),
-                              ],
-                            ),
-                            const SizedBox(
-                              height: 20,
-                            ),
-                            Row(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                const Text(
-                                  'Degree:',
-                                  style: TextStyle(fontWeight: FontWeight.bold),
-                                ),
-                                SizedBox(
-                                  width: 5,
-                                ),
-                                Text(doc['degree'], maxLines: 1),
-                              ],
-                            ),
-                            const SizedBox(
-                              height: 20,
-                            ),
-                            Row(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                const Text(
-                                  'Medical College:',
-                                  style: TextStyle(fontWeight: FontWeight.bold),
-                                ),
-                                SizedBox(
-                                  width: 5,
-                                ),
-                                Text(doc['college'], maxLines: 1),
-                              ],
-                            ),
-                            const SizedBox(
-                              height: 20,
-                            ),
-                            Row(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                const Text(
-                                  'Other Expertize:',
-                                  style: TextStyle(fontWeight: FontWeight.bold),
-                                ),
-                                SizedBox(
-                                  width: 5,
-                                ),
-                                Text(doc['Other_speciality']),
-                              ],
-                            ),
-                            const SizedBox(
-                              height: 20,
-                            ),
-          
-                            Row(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                const Text(
-                                  'Currently Working at:',
-                                  style: TextStyle(fontWeight: FontWeight.bold),
-                                ),
-                                SizedBox(
-                                  width: 5,
-                                ),
-                                Text(doc['Working'], maxLines: 1),
-                              ],
-                            ),
-                            const SizedBox(
-                              height: 20,
-                            ),
-                            Row(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                const Text(
-                                  'Previous Work Experience:',
-                                  style: TextStyle(fontWeight: FontWeight.bold),
-                                ),
-                                SizedBox(
-                                  width: 5,
-                                ),
-                                Text(doc['Previous_work']),
-                              ],
-                            ),
-                            const SizedBox(
-                              height: 20,
-                            ),
-                            Row(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                const Text(
-                                  'Fees:',
-                                  style: TextStyle(fontWeight: FontWeight.bold),
-                                ),
-                                SizedBox(
-                                  width: 5,
-                                ),
-                                Text(doc['fees'], maxLines: 1),
-                              ],
-                            ),
-                            const SizedBox(
-                              height: 20,
-                            ),
-                          ],
-                        );
-                      }
+                            );
+                    }
+                  },
+                ),
+                TextButton(
+                    onPressed: () {
+                      !yourBooleanValue
+                          ? Navigator.pushReplacement(
+                              context,
+                              PageRouteBuilder(
+                                  pageBuilder:
+                                      (context, animation1, animation2) =>
+                                          personel(),
+                                  transitionDuration: Duration.zero,
+                                  reverseTransitionDuration: Duration.zero))
+                          : Navigator.pushReplacement(
+                              context,
+                              PageRouteBuilder(
+                                  pageBuilder:
+                                      (context, animation1, animation2) =>
+                                          Dpersonel(),
+                                  transitionDuration: Duration.zero,
+                                  reverseTransitionDuration: Duration.zero));
                     },
-                  ),
-
-                 TextButton(
-                      onPressed: () {
-                        !yourBooleanValue?Navigator.pushReplacement(
-                            context,
-                            PageRouteBuilder(
-                                pageBuilder: (context, animation1, animation2) => personel(),
-                                transitionDuration: Duration.zero,
-                                reverseTransitionDuration: Duration.zero)):Navigator.pushReplacement(
-                            context,
-                            PageRouteBuilder(
-                                pageBuilder: (context, animation1, animation2) => Dpersonel(),
-                                transitionDuration: Duration.zero,
-                                reverseTransitionDuration: Duration.zero));
-
-                      },
-                      child: const Text(
-                        'Update or add details',
-                        style: TextStyle(
-                          color: Color.fromARGB(255, 125, 216, 197),
-                        ),
-                      )),
-
-                 TextButton(
-                      onPressed: () {
-                        signout();
-                        // Navigator.of(context).pop();
-                      },
-                      child: const Text(
-                        'Logout',
-                        style: TextStyle(
-                          color: Color.fromARGB(255, 125, 216, 197),
-                        ),
-                      )),
-
+                    child: const Text(
+                      'Update or add details',
+                      style: TextStyle(
+                        color: Color.fromARGB(255, 125, 216, 197),
+                      ),
+                    )),
+                TextButton(
+                    onPressed: () {
+                      signout();
+                      // Navigator.of(context).pop();
+                    },
+                    child: const Text(
+                      'Logout',
+                      style: TextStyle(
+                        color: Color.fromARGB(255, 125, 216, 197),
+                      ),
+                    )),
                 Center(
                   child: ElevatedButton(
                     style: ElevatedButton.styleFrom(
                       foregroundColor: Colors.white,
                       backgroundColor: Color.fromARGB(100, 125, 216, 197),
-                      padding: EdgeInsets.symmetric(horizontal: 30, vertical: 15),
+                      padding:
+                          EdgeInsets.symmetric(horizontal: 30, vertical: 15),
                       shape: RoundedRectangleBorder(
                         borderRadius:
                             BorderRadius.circular(30), // Rounded corners
@@ -659,7 +676,6 @@ class _profilestate extends State<Profile> {
                     ),
                   ),
                 ),
-
               ],
             ),
           ),

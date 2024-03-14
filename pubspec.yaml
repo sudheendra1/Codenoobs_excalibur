@@ -54,6 +54,9 @@ dependencies:
   flutter_document_picker: ^5.2.3
   path: ^1.8.3
   syncfusion_flutter_pdfviewer: ^24.2.8
+  dio: ^5.4.1
+  chewie: ^1.7.5
+  video_player: ^2.8.3
 
 
 

@@ -2,6 +2,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:pharmcare/forgot_password.dart';
 import 'package:pharmcare/home_page.dart';
 import 'package:pharmcare/signup.dart';
 
@@ -146,6 +147,20 @@ class _loginpagestate extends State<Loginpage> {
                       _enteredpassword = value!;
                     },
                   ),
+                  SizedBox(height: 10),
+
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.end,
+                    children: [
+                      TextButton(
+                        onPressed: () {
+                          Navigator.push(context,
+                              MaterialPageRoute(builder: (context) =>Forgot_pass()));
+                        },
+                        child: Text('Forgot password?'),
+                      ),
+                    ],
+                  ),
                   SizedBox(height: 20),
                   ElevatedButton(
                     onPressed: submit,
@@ -168,8 +183,8 @@ class _loginpagestate extends State<Loginpage> {
                           EdgeInsets.symmetric(horizontal: 50, vertical: 15),
                     ),
                   ),
-                  SizedBox(height: 20),
-                  ElevatedButton.icon(
+                  //SizedBox(height: 20),
+                  /*ElevatedButton.icon(
                     icon: Image.asset("assets/images/google_logo.png",
                         height: 24.0),
                     // Adjust this path
@@ -191,7 +206,7 @@ class _loginpagestate extends State<Loginpage> {
                       foregroundColor: Colors.white,
                       backgroundColor: Colors.blueAccent,
                     ),
-                  ),
+                  ),*/
                   SizedBox(height: 20),
                   TextButton(
                     onPressed: () {
